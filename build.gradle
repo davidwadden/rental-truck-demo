@@ -10,36 +10,25 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
 
-group = 'io.pivotal.pal.data'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+subprojects {
 
-repositories {
-    mavenCentral()
-}
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'io.spring.dependency-management'
 
+    group = 'io.pivotal.pal.data'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
 
-ext {
-    springCloudVersion = 'Edgware.SR3'
-}
-
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-data-cassandra')
-    compile('org.springframework.cloud:spring-cloud-stream')
-    compile('org.springframework.cloud:spring-cloud-stream-binder-kafka')
-    compile('org.springframework.kafka:spring-kafka')
-
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile('org.springframework.cloud:spring-cloud-stream-test-support')
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    repositories {
+        mavenCentral()
     }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+
 }

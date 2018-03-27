@@ -7,7 +7,7 @@ spring:
   data:
     cassandra:
       cluster-name: Test Cluster
-      keyspace-name: example
+      keyspace-name: rentaltrucks
       username: cassandra
       password: cassandra
       schema-action: recreate_drop_unused
