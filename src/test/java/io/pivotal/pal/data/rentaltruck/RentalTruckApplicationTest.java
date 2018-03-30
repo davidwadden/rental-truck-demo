@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.fakesource;
+package io.pivotal.pal.data.rentaltruck;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,10 +7,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FakeSourceApplicationTests {
+public class RentalTruckApplicationTest {
 
-	@Test
-	public void contextLoads() {
-	}
+    @Test
+    public void contextLoads() {
+    }
 
 }
