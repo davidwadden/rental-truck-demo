@@ -2,3 +2,12 @@
 
 server:
   port: 8680
+
+spring:
+  data:
+    cassandra:
+      cluster-name: Test Cluster
+      keyspace-name: example
+      username: cassandra
+      password: cassandra
+      schema-action: recreate_drop_unused
