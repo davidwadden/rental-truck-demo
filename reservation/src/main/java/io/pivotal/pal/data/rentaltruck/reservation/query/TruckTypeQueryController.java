@@ -5,9 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.stream.Collectors.toList;
-
 @RestController("/truck-types")
 public class TruckTypeQueryController {
 
@@ -18,36 +15,8 @@ public class TruckTypeQueryController {
     }
 
     @GetMapping
-    public Collection<TruckTypeQueryDto> findTruckTypesByPickupLocationDate() {
-
-        return newArrayList(repository.findAll())
-                .stream()
-                .map(TruckTypeQueryDto::new)
-                .collect(toList());
+    public Collection<TruckTypeProjection> findAll() {
+        return repository.findAllProjectedBy();
     }
 
-
-    private class TruckTypeQueryDto {
-
-        private final String truckType;
-
-        private TruckTypeQueryDto(String truckType) {
-            this.truckType = truckType;
-        }
-
-        private TruckTypeQueryDto(TruckType truckType) {
-            this.truckType = truckType.getTruckType();
-        }
-
-        public String getTruckType() {
-            return truckType;
-        }
-
-        @Override
-        public String toString() {
-            return "TruckTypeQueryDto{" +
-                    "truckType='" + truckType + '\'' +
-                    '}';
-        }
-    }
 }

@@ -13,8 +13,7 @@ import static java.util.Arrays.asList;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TruckTypeQueryControllerTest {
@@ -31,11 +30,12 @@ public class TruckTypeQueryControllerTest {
 
     @Test
     public void findAllTruckTypes() throws Exception {
-        TruckType truckType1 = new TruckType("some-truck-type-1");
-        TruckType truckType2 = new TruckType("some-truck-type-2");
+        TruckTypeProjection truckType1 = () -> "some-truck-type-1";
+        TruckTypeProjection truckType2 = () -> "some-truck-type-2";
+
         doReturn(asList(truckType1, truckType2))
                 .when(mockRepository)
-                .findAll();
+                .findAllProjectedBy();
 
         mockMvc
                 .perform(
@@ -44,28 +44,11 @@ public class TruckTypeQueryControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$[0].truckType").value("some-truck-type-1"))
+                .andExpect(jsonPath("$[1].truckType").value("some-truck-type-2"))
                 .andReturn();
 
-        verify(mockRepository).findAll();
+        verify(mockRepository).findAllProjectedBy();
     }
 
-    @Test
-    public void findTruckTypesByPickupLocationDate() throws Exception {
-        TruckType truckType1 = new TruckType("some-truck-type-1");
-        TruckType truckType2 = new TruckType("some-truck-type-2");
-        doReturn(asList(truckType1, truckType2))
-                .when(mockRepository)
-                .findAll();
-
-        mockMvc
-                .perform(
-                        get("/truck-types?city=some-city&state=some-state&pickupDate=2018-03-01")
-                                .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                )
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andReturn();
-
-        verify(mockRepository).findAll();
-    }
 }

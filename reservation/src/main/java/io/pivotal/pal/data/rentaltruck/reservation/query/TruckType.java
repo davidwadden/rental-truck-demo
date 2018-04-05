@@ -29,7 +29,6 @@ public class TruckType {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(truckType);
     }
 
