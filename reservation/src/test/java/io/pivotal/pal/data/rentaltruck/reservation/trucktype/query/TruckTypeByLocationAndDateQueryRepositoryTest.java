@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query;
+package io.pivotal.pal.data.rentaltruck.reservation.trucktype.query;
 
 import org.junit.After;
 import org.junit.Test;

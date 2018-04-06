@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query;
+package io.pivotal.pal.data.rentaltruck.reservation.trucktype.query;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,50 +9,41 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import static java.util.Arrays.asList;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TruckTypeByLocationAndDateQueryControllerTest {
+public class TruckTypeQueryControllerTest {
 
     @Mock
-    private TruckTypeByLocationAndDateQueryRepository mockRepository;
+    private TruckTypeQueryRepository mockRepository;
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
-        TruckTypeByLocationAndDateQueryController controller = new TruckTypeByLocationAndDateQueryController(mockRepository);
+        TruckTypeQueryController controller = new TruckTypeQueryController(mockRepository);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
-    public void listTruckTypesByLocationAndDate() throws Exception {
-        List<TruckTypeByLocationAndDateProjection> toBeReturned = asList(
-                makeTruckTypeByLocationAndDateProjection("0"),
-                makeTruckTypeByLocationAndDateProjection("1")
-        );
-        doReturn(toBeReturned)
+    public void listTruckTypes() throws Exception {
+        TruckTypeProjection truckType1 = makeTruckTypeProjection("0");
+        TruckTypeProjection truckType2 = makeTruckTypeProjection("1");
+
+        doReturn(asList(truckType1, truckType2))
                 .when(mockRepository)
-                .findAllProjectedByKey(any(), any(), any());
+                .findAllProjectedBy();
 
         mockMvc
                 .perform(
-                        get("/truck-types-by-location-and-date")
-                                .param("city", "some-city")
-                                .param("state", "some-state")
-                                .param("pickupDate", "2018-03-01")
+                        get("/truck-types")
                                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].truckType").value("some-truck-type-0"))
                 .andExpect(jsonPath("$[0].truckMake").value("some-truck-make-0"))
                 .andExpect(jsonPath("$[0].truckModel").value("some-truck-model-0"))
@@ -61,15 +52,11 @@ public class TruckTypeByLocationAndDateQueryControllerTest {
                 .andExpect(jsonPath("$[1].truckModel").value("some-truck-model-1"))
                 .andReturn();
 
-        verify(mockRepository).findAllProjectedByKey(
-                "some-city",
-                "some-state",
-                LocalDate.of(2018, 03, 01)
-        );
+        verify(mockRepository).findAllProjectedBy();
     }
 
-    private static TruckTypeByLocationAndDateProjection makeTruckTypeByLocationAndDateProjection(String suffix) {
-        return new TruckTypeByLocationAndDateProjection() {
+    private static TruckTypeProjection makeTruckTypeProjection(String suffix) {
+        return new TruckTypeProjection() {
             @Override
             public String getTruckType() {
                 return String.format("some-truck-type-%s", suffix);

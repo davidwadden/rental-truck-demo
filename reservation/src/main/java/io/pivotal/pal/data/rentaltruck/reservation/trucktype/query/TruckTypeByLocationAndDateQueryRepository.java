@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query;
+package io.pivotal.pal.data.rentaltruck.reservation.trucktype.query;
 
 import org.springframework.data.cassandra.repository.Query;
 import org.springframework.data.repository.Repository;
