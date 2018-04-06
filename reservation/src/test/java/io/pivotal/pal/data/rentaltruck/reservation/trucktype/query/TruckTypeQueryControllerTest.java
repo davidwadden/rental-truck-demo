@@ -44,6 +44,7 @@ public class TruckTypeQueryControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.size()").value(2))
                 .andExpect(jsonPath("$[0].truckType").value("some-truck-type-0"))
                 .andExpect(jsonPath("$[0].truckMake").value("some-truck-make-0"))
                 .andExpect(jsonPath("$[0].truckModel").value("some-truck-model-0"))
