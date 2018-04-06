@@ -34,7 +34,10 @@ public class TruckTypeByLocationAndDateQueryControllerTest {
 
     @Test
     public void listTruckTypesByLocationAndDate() throws Exception {
-        List<TruckTypeByLocationAndDateProjection> toBeReturned = asList(() -> "some-truck-type-1", () -> "some-truck-type-2");
+        List<TruckTypeByLocationAndDateProjection> toBeReturned = asList(
+                makeTruckTypeByLocationAndDateProjection("0"),
+                makeTruckTypeByLocationAndDateProjection("1")
+        );
         doReturn(toBeReturned)
                 .when(mockRepository)
                 .findAllProjectedByKey(any(), any(), any());
@@ -50,8 +53,12 @@ public class TruckTypeByLocationAndDateQueryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].truckType").value("some-truck-type-1"))
-                .andExpect(jsonPath("$[1].truckType").value("some-truck-type-2"))
+                .andExpect(jsonPath("$[0].truckType").value("some-truck-type-0"))
+                .andExpect(jsonPath("$[0].truckMake").value("some-truck-make-0"))
+                .andExpect(jsonPath("$[0].truckModel").value("some-truck-model-0"))
+                .andExpect(jsonPath("$[1].truckType").value("some-truck-type-1"))
+                .andExpect(jsonPath("$[1].truckMake").value("some-truck-make-1"))
+                .andExpect(jsonPath("$[1].truckModel").value("some-truck-model-1"))
                 .andReturn();
 
         verify(mockRepository).findAllProjectedByKey(
@@ -59,5 +66,24 @@ public class TruckTypeByLocationAndDateQueryControllerTest {
                 "some-state",
                 LocalDate.of(2018, 03, 01)
         );
+    }
+
+    private static TruckTypeByLocationAndDateProjection makeTruckTypeByLocationAndDateProjection(String suffix) {
+        return new TruckTypeByLocationAndDateProjection() {
+            @Override
+            public String getTruckType() {
+                return String.format("some-truck-type-%s", suffix);
+            }
+
+            @Override
+            public String getTruckMake() {
+                return String.format("some-truck-make-%s", suffix);
+            }
+
+            @Override
+            public String getTruckModel() {
+                return String.format("some-truck-model-%s", suffix);
+            }
+        };
     }
 }

@@ -4,4 +4,8 @@ interface TruckTypeProjection {
 
     String getTruckType();
 
+    String getTruckMake();
+
+    String getTruckModel();
+
 }

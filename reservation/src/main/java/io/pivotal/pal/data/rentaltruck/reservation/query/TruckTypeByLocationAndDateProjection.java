@@ -7,4 +7,8 @@ interface TruckTypeByLocationAndDateProjection {
     @Value("#{target.getKey().getTruckType()}")
     String getTruckType();
 
+    String getTruckMake();
+
+    String getTruckModel();
+
 }

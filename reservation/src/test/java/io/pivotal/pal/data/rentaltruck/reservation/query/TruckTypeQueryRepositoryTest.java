@@ -29,8 +29,8 @@ public class TruckTypeQueryRepositoryTest {
 
     @Test
     public void findAll() {
-        TruckType truckType1 = new TruckType("some-truck-type-1");
-        TruckType truckType2 = new TruckType("some-truck-type-2");
+        TruckType truckType1 = new TruckType("some-truck-type-1", "some-truck-make-1", "some-truck-model-1");
+        TruckType truckType2 = new TruckType("some-truck-type-2", "some-truck-make-2", "some-truck-model-2");
 
         cassandraOperations.insert(truckType1);
         cassandraOperations.insert(truckType2);
@@ -43,8 +43,8 @@ public class TruckTypeQueryRepositoryTest {
 
     @Test
     public void findAllProjectedBy() {
-        TruckType truckType1 = new TruckType("some-truck-type-1");
-        TruckType truckType2 = new TruckType("some-truck-type-2");
+        TruckType truckType1 = new TruckType("some-truck-type-1", "some-truck-make-1", "some-truck-model-1");
+        TruckType truckType2 = new TruckType("some-truck-type-2", "some-truck-make-2", "some-truck-model-2");
 
         cassandraOperations.insert(truckType1);
         cassandraOperations.insert(truckType2);

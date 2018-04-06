@@ -30,8 +30,8 @@ public class TruckTypeQueryControllerTest {
 
     @Test
     public void listTruckTypes() throws Exception {
-        TruckTypeProjection truckType1 = () -> "some-truck-type-1";
-        TruckTypeProjection truckType2 = () -> "some-truck-type-2";
+        TruckTypeProjection truckType1 = makeTruckTypeProjection("0");
+        TruckTypeProjection truckType2 = makeTruckTypeProjection("1");
 
         doReturn(asList(truckType1, truckType2))
                 .when(mockRepository)
@@ -44,10 +44,33 @@ public class TruckTypeQueryControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$[0].truckType").value("some-truck-type-1"))
-                .andExpect(jsonPath("$[1].truckType").value("some-truck-type-2"))
+                .andExpect(jsonPath("$[0].truckType").value("some-truck-type-0"))
+                .andExpect(jsonPath("$[0].truckMake").value("some-truck-make-0"))
+                .andExpect(jsonPath("$[0].truckModel").value("some-truck-model-0"))
+                .andExpect(jsonPath("$[1].truckType").value("some-truck-type-1"))
+                .andExpect(jsonPath("$[1].truckMake").value("some-truck-make-1"))
+                .andExpect(jsonPath("$[1].truckModel").value("some-truck-model-1"))
                 .andReturn();
 
         verify(mockRepository).findAllProjectedBy();
+    }
+
+    private static TruckTypeProjection makeTruckTypeProjection(String suffix) {
+        return new TruckTypeProjection() {
+            @Override
+            public String getTruckType() {
+                return String.format("some-truck-type-%s", suffix);
+            }
+
+            @Override
+            public String getTruckMake() {
+                return String.format("some-truck-make-%s", suffix);
+            }
+
+            @Override
+            public String getTruckModel() {
+                return String.format("some-truck-model-%s", suffix);
+            }
+        };
     }
 }
