@@ -45,8 +45,7 @@ public class TruckTypeByLocationAndDateQueryRepositoryTest {
         Collection<TruckTypeByLocationAndDate> truckTypesByLocationAndDate = repository.findAllByKey(
                 key.getPickupCity(),
                 key.getPickupState(),
-                key.getPickupDate(),
-                key.getTruckType()
+                key.getPickupDate()
         );
 
         assertThat(truckTypesByLocationAndDate)
@@ -72,13 +71,12 @@ public class TruckTypeByLocationAndDateQueryRepositoryTest {
         Collection<TruckTypeByLocationAndDateProjection> truckTypes = repository.findAllProjectedByKey(
                 key.getPickupCity(),
                 key.getPickupState(),
-                key.getPickupDate(),
-                key.getTruckType()
+                key.getPickupDate()
         );
 
         assertThat(truckTypes)
                 .hasSize(1)
-                .extracting(TruckTypeByLocationAndDateProjection::truckType)
+                .extracting(TruckTypeByLocationAndDateProjection::getTruckType)
                 .containsExactly("some-truck-type");
     }
 }

@@ -9,16 +9,14 @@ import java.util.Collection;
 public interface TruckTypeByLocationAndDateQueryRepository extends Repository<TruckTypeByLocationAndDate, TruckTypeByLocationAndDateKey> {
 
 
-    @Query("SELECT * FROM truck_types_by_location_and_date WHERE pickup_city = ?0 AND pickup_state = ?1 AND pickup_date = ?2 AND truck_type = ?3")
+    @Query("SELECT * FROM truck_types_by_location_and_date WHERE pickup_city = ?0 AND pickup_state = ?1 AND pickup_date = ?2")
     Collection<TruckTypeByLocationAndDate> findAllByKey(String pickupCity,
                                                         String pickupState,
-                                                        LocalDate pickupDate,
-                                                        String truckType);
+                                                        LocalDate pickupDate);
 
-    @Query("SELECT * FROM truck_types_by_location_and_date WHERE pickup_city = ?0 AND pickup_state = ?1 AND pickup_date = ?2 AND truck_type = ?3")
+    @Query("SELECT * FROM truck_types_by_location_and_date WHERE pickup_city = ?0 AND pickup_state = ?1 AND pickup_date = ?2")
     Collection<TruckTypeByLocationAndDateProjection> findAllProjectedByKey(String pickupCity,
                                                                            String pickupState,
-                                                                           LocalDate pickupDate,
-                                                                           String truckType);
+                                                                           LocalDate pickupDate);
 
 }

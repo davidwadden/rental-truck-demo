@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
-@RestController("/truck-types")
+@RestController
 public class TruckTypeQueryController {
 
     private final TruckTypeQueryRepository repository;
@@ -14,8 +14,8 @@ public class TruckTypeQueryController {
         this.repository = repository;
     }
 
-    @GetMapping
-    public Collection<TruckTypeProjection> findAll() {
+    @GetMapping("/truck-types")
+    public Collection<TruckTypeProjection> listTruckTypes() {
         return repository.findAllProjectedBy();
     }
 
