@@ -1,19 +1,18 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.kafka.core.KafkaTemplate;
 
 public class KafkaAsyncEventSubscriber<T> extends AsyncEventSubscriber<T> {
 
-    private KafkaProducer<Object, T> producer;
+    private KafkaTemplate<Object, T> template;
 
-    public KafkaAsyncEventSubscriber(String eventName, KafkaProducer<Object, T> producer) {
+    public KafkaAsyncEventSubscriber(String eventName, KafkaTemplate<Object, T> template) {
         super(eventName);
-        this.producer = producer;
+        this.template = template;
     }
 
     @Override
     protected void onEvent(T data) {
-        producer.send(new ProducerRecord<>(getEventName(), data));
+        template.send(getEventName(), data);
     }
 }
