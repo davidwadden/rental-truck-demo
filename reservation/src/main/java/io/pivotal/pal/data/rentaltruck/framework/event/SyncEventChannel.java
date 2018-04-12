@@ -1,28 +1,35 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class SyncEventChannel {
 
-    private static Map<String, SyncEventSubscriber<?>> subscribers = new HashMap<>();
+    private String eventName;
+    private static Map<String, Set<SyncEventSubscriber<Object,Object>>> subscribers = new HashMap<>();
 
-    protected static <T> void registerSubscriber(String eventName, SyncEventSubscriber<T> subscriber) {
-        if (subscribers.putIfAbsent(eventName, subscriber) != null) {
-            throw new IllegalArgumentException("Subscriber for event "+eventName+" already registered");
-        }
+    public String getEventName() {
+        return eventName;
     }
 
-    protected static <T> SyncEventSubscriber<T> getSubscriber(String eventName) {
-        SyncEventSubscriber<T> subscriber = (SyncEventSubscriber<T>) subscribers.get(eventName);
+    protected void registerSubscriber(SyncEventSubscriber<Object,Object> subscriber) {
+        Set<SyncEventSubscriber<Object,Object>> set = subscribers.computeIfAbsent(eventName, k-> new HashSet<>());
+        set.add(subscriber);
+    }
 
-        if (subscriber == null) {
+    protected Set<SyncEventSubscriber<Object,Object>> getSubscribers() {
+        Set<SyncEventSubscriber<Object,Object>> set = subscribers.get(eventName);
+
+        if (set == null) {
             throw new IllegalArgumentException("Subscriber for event "+eventName+" not found");
         }
 
-        return subscriber;
+        return set;
     }
 
-    protected SyncEventChannel() {
+    protected SyncEventChannel(String eventName) {
+        this.eventName = eventName;
     }
 }

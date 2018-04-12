@@ -1,20 +1,16 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public abstract class AsyncEventSubscriber<T> extends AsyncEventChannel {
 
-    private BlockingQueue<T> queue;
-    private String eventName;
+    private BlockingQueue<T> queue = new LinkedBlockingQueue<>();
 
     public AsyncEventSubscriber(String eventName) {
-        this.eventName = eventName;
-        this.queue = getQueue(eventName);
+        super(eventName);
+        addQueue(queue);
         new Processor().start();
-    }
-
-    public String getEventName() {
-        return eventName;
     }
 
     abstract protected void onEvent(T data);
@@ -28,7 +24,7 @@ public abstract class AsyncEventSubscriber<T> extends AsyncEventChannel {
                     T data = queue.take();
                     onEvent(data);
                 } catch (Exception x) {
-
+                    // TODO
                 }
             }
         }

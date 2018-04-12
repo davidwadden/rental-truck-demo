@@ -1,16 +1,18 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public abstract class AsyncEventPublisher<T> extends AsyncEventChannel {
 
-    private BlockingQueue<T> queue;
-
     public AsyncEventPublisher(String eventName) {
-        queue = getQueue(eventName);
+        super(eventName);
     }
 
     public void publish(T data) {
-        queue.offer(data);
+        Set<BlockingQueue<?>> queues = getQueues();
+        for (BlockingQueue<?> queue: queues) {
+            ((BlockingQueue<T>)queue).offer(data);
+        }
     }
 }
