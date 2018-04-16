@@ -14,6 +14,6 @@ public class SpringIntegrationAsyncEventSubscriber<T> extends AsyncEventSubscrib
 
     @Override
     protected void onEvent(T data) {
-        channel.send(MessageBuilder.withPayload(data).build());
+        channel.send(MessageBuilder.withPayload(data).setHeader("eventName", getEventName()).build());
     }
 }
