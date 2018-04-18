@@ -2,18 +2,19 @@ package io.pivotal.pal.data.rentaltruck.framework.event;
 
 import org.springframework.kafka.core.KafkaTemplate;
 
-public class KafkaAsyncEventSubscriber<T> implements AsyncEventHandler<T> {
+public class KafkaSyncEventHandler<C, R> implements SyncEventHandler<C, R> {
 
     private String eventName;
-    private KafkaTemplate<Object, T> template;
+    private KafkaTemplate<Object, C> template;
 
-    public KafkaAsyncEventSubscriber(String eventName, KafkaTemplate<Object, T> template) {
+    public KafkaSyncEventHandler(String eventName, KafkaTemplate<Object, C> template) {
         this.eventName = eventName;
         this.template = template;
     }
 
     @Override
-    public void onEvent(T data) {
+    public R onEvent(C data) {
         template.send(eventName, data);
+        return null;
     }
 }

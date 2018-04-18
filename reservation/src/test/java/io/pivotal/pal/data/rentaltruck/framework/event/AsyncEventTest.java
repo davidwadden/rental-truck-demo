@@ -1,6 +1,5 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,8 +9,8 @@ public class AsyncEventTest {
 
     private String data;
 
-    private Publisher publisher = new Publisher();
-    private Subscriber subscriber = new Subscriber();
+    private DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<String>(eventName);
+    private AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(eventName, new Handler());
 
     private static final String eventName = "test";
 
@@ -30,21 +29,10 @@ public class AsyncEventTest {
         assertThat(data).isEqualTo(someData);
     }
 
-    private class Publisher extends AsyncEventPublisher<String> {
-
-        public Publisher() {
-            super(eventName);
-        }
-    }
-
-    private class Subscriber extends AsyncEventSubscriber<String> {
-
-        public Subscriber() {
-            super(eventName);
-        }
+    private class Handler implements AsyncEventHandler<String> {
 
         @Override
-        protected void onEvent(String data) {
+        public void onEvent(String data) {
             AsyncEventTest.this.data = data;
         }
     }

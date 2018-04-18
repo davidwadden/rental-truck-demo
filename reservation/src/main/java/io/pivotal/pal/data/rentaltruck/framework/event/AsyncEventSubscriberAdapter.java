@@ -3,17 +3,17 @@ package io.pivotal.pal.data.rentaltruck.framework.event;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public abstract class AsyncEventSubscriber<T> extends AsyncEventChannel {
+public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel {
 
+    private AsyncEventHandler<T> handler;
     private BlockingQueue<T> queue = new LinkedBlockingQueue<>();
 
-    public AsyncEventSubscriber(String eventName) {
+    public AsyncEventSubscriberAdapter(String eventName, AsyncEventHandler<T> subscriber) {
         super(eventName);
+        this.handler = subscriber;
         addQueue(queue);
         new Processor().start();
     }
-
-    abstract protected void onEvent(T data);
 
     private class Processor extends Thread {
 
@@ -22,7 +22,7 @@ public abstract class AsyncEventSubscriber<T> extends AsyncEventChannel {
             while (true) {
                 try {
                     T data = queue.take();
-                    onEvent(data);
+                    handler.onEvent(data);
                 } catch (Exception x) {
                     // TODO
                 }

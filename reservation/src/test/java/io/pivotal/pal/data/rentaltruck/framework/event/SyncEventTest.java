@@ -7,14 +7,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SyncEventTest {
 
-    private Publisher publisher = new Publisher();
-    private Subscriber subscriber = new Subscriber();
-
+    private DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<String, String>(eventName);
+    private Handler handler = new Handler();
+    private SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(eventName, handler);
     private static final String eventName = "test";
 
     @Before
     public void setUp() {
-        subscriber.setData(null);
+        handler.setData(null);
     }
 
     @Test
@@ -22,23 +22,15 @@ public class SyncEventTest {
         String someData = "some-data";
         String result = publisher.publish(someData);
 
-        assertThat(subscriber.getData()).isEqualTo(someData);
+        assertThat(handler.getData()).isEqualTo(someData);
         assertThat(result).isEqualTo(someData);
     }
 
-    private class Publisher extends SyncEventPublisher<String, String> {
-
-        public Publisher() {
-            super(eventName);
-        }
-    }
-
-    private class Subscriber extends SyncEventSubscriber<String, String> {
+    private class Handler implements SyncEventHandler<String, String> {
 
         private String data;
 
-        public Subscriber() {
-            super(eventName);
+        public Handler() {
         }
 
         public String getData() {
@@ -50,7 +42,7 @@ public class SyncEventTest {
         }
 
         @Override
-        protected String onEvent(String data) {
+        public String onEvent(String data) {
             this.data = data;
             return data;
         }

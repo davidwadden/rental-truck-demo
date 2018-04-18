@@ -9,7 +9,7 @@ import org.springframework.kafka.listener.config.ContainerProperties;
 
 import java.util.Map;
 
-public class KafkaSyncEventPublisher<C, R> extends SyncEventPublisher<C, R> implements MessageListener<Object, C>, SmartLifecycle {
+public class KafkaSyncEventPublisher<C, R> extends DefaultSyncEventPublisher<C, R> implements MessageListener<Object, C>, SmartLifecycle {
 
     private KafkaMessageListenerContainer<Object, C> container;
     private Map<String, Object> consumerProps;

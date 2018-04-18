@@ -2,7 +2,7 @@ package io.pivotal.pal.data.rentaltruck.framework.event;
 
 import org.springframework.messaging.*;
 
-public class SpringIntegrationAsyncEventPublisher<T> extends AsyncEventPublisher<T> implements MessageHandler {
+public class SpringIntegrationAsyncEventPublisher<T> extends DefaultAsyncEventPublisher<T> implements MessageHandler {
 
     public SpringIntegrationAsyncEventPublisher(String eventName, SubscribableChannel channel) {
         super(eventName);
