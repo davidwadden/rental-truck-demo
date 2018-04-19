@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query.naivetrucktype;
+package io.pivotal.pal.data.rentaltruck.reservation.query.trucktype;
 
 interface TruckTypeProjection {
 
