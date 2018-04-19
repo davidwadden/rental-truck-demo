@@ -8,8 +8,6 @@ import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationRequestedEve
 import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-
 /**
  * This handler subscribes to {@link ReservationRequestedEvent} and inserts record(s)
  * into the data store to de-dup potential re-delivered messages and to track the state
