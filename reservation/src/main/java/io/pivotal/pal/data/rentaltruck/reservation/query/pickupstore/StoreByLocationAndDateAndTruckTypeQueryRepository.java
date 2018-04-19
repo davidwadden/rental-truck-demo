@@ -1,5 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.reservation.query.pickupstore;
 
+import io.pivotal.pal.data.rentaltruck.reservation.entity.StoreByLocationAndDateAndTruckType;
+import io.pivotal.pal.data.rentaltruck.reservation.entity.StoreByLocationAndDateAndTruckTypeKey;
 import org.springframework.data.cassandra.repository.Query;
 import org.springframework.data.repository.Repository;
 

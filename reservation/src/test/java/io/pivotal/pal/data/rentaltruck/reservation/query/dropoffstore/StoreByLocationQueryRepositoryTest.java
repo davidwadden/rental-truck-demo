@@ -1,5 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.reservation.query.dropoffstore;
 
+import io.pivotal.pal.data.rentaltruck.reservation.entity.StoreByLocation;
+import io.pivotal.pal.data.rentaltruck.reservation.entity.StoreByLocationKey;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

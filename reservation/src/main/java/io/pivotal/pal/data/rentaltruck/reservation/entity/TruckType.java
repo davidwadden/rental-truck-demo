@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query.naivetrucktype;
+package io.pivotal.pal.data.rentaltruck.reservation.entity;
 
 import org.springframework.data.cassandra.mapping.Column;
 import org.springframework.data.cassandra.mapping.PrimaryKey;

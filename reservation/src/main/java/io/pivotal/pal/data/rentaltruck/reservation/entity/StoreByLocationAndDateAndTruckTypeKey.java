@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query.pickupstore;
+package io.pivotal.pal.data.rentaltruck.reservation.entity;
 
 import org.springframework.data.cassandra.mapping.PrimaryKeyClass;
 import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;

@@ -1,5 +1,6 @@
 package io.pivotal.pal.data.rentaltruck.reservation.query.naivetrucktype;
 
+import io.pivotal.pal.data.rentaltruck.reservation.entity.TruckType;
 import org.springframework.data.repository.Repository;
 
 import java.util.Collection;
