@@ -23,7 +23,7 @@ public class SyncEventTest {
     }
 
     @Test
-    public void basicTest() throws Exception {
+    public void basicTest() {
         String someData = "some-data";
         String result = publisher.publish(someData);
 

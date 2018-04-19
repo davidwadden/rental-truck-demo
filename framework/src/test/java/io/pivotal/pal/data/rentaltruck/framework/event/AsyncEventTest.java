@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Duration.ONE_SECOND;
 
 public class AsyncEventTest {
 
@@ -23,13 +25,13 @@ public class AsyncEventTest {
     }
 
     @Test
-    public void basicTest() throws Exception {
+    public void basicTest() {
         String someData = "some-data";
         publisher.publish(someData);
 
-        Thread.sleep(1000);
-
-        assertThat(data).isEqualTo(someData);
+        await()
+                .atMost(ONE_SECOND)
+                .untilAsserted(() -> assertThat(data).isEqualTo(someData));
     }
 
     private class Handler implements AsyncEventHandler<String> {
