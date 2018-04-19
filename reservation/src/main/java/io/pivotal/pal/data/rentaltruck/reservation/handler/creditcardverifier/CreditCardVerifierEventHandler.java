@@ -27,16 +27,16 @@ public class CreditCardVerifierEventHandler implements AsyncEventHandler<Reserva
 
     private final AsyncEventPublisher<CreditCardVerifiedEvent> creditCardVerifiedEventPublisher;
     private final AsyncEventPublisher<CreditCardFailedEvent> creditCardFailedEventPublisher;
-    private final ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository;
+    private final ReservationByConfirmationNumberRepository repository;
     private final CreditCardService creditCardService;
 
     public CreditCardVerifierEventHandler(AsyncEventPublisher<CreditCardVerifiedEvent> creditCardVerifiedEventPublisher,
                                           AsyncEventPublisher<CreditCardFailedEvent> creditCardFailedEventPublisher,
-                                          ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository,
+                                          ReservationByConfirmationNumberRepository repository,
                                           CreditCardService creditCardService) {
         this.creditCardVerifiedEventPublisher = creditCardVerifiedEventPublisher;
         this.creditCardFailedEventPublisher = creditCardFailedEventPublisher;
-        this.reservationByConfirmationNumberRepository = reservationByConfirmationNumberRepository;
+        this.repository = repository;
         this.creditCardService = creditCardService;
     }
 
@@ -47,23 +47,25 @@ public class CreditCardVerifierEventHandler implements AsyncEventHandler<Reserva
         String confirmationNumber = data.getConfirmationNumber();
 
         // de-dup by updating record to status=processing (abort if already processing status)
-        ReservationByConfirmationNumber reservation = reservationByConfirmationNumberRepository.findByConfirmationNumber(confirmationNumber);
+        ReservationByConfirmationNumber reservation = repository.findByConfirmationNumber(confirmationNumber);
         Assert.notNull(reservation, "Reservation '" + confirmationNumber + "' not found");
 
         // verify credit card rest template to 3rd party API
         if (reservation.getStatus().equals("PROCESSING")) {
             logger.warn("already processing reservation {}", reservation.getConfirmationNumber());
-        } else {
-            reservation.setStatus("PROCESSING");
-            reservationByConfirmationNumberRepository.save(reservation);
-            if (creditCardService.validateCreditCard(reservation.getCreditCardNumber(), 0.0 /*TODO: real value*/)) {
-                // if success, emit credit card verified message downstream
-                creditCardVerifiedEventPublisher.publish(new CreditCardVerifiedEvent());
-            } else {
-                // if failed, emit credit card failed event
-                creditCardFailedEventPublisher.publish(new CreditCardFailedEvent());
-            }
+            return;
         }
 
+        reservation.setStatus("PROCESSING");
+        repository.save(reservation);
+
+        // TODO: discuss how this relies on data being passed through DB rather than events
+        if (creditCardService.validateCreditCard(reservation.getCreditCardNumber(), 0.0 /*TODO: real value*/)) {
+            // if success, emit credit card verified message downstream
+            creditCardVerifiedEventPublisher.publish(new CreditCardVerifiedEvent());
+        } else {
+            // if failed, emit credit card failed event
+            creditCardFailedEventPublisher.publish(new CreditCardFailedEvent());
+        }
     }
 }
