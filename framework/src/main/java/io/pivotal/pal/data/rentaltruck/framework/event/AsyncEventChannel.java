@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public abstract class AsyncEventChannel {
 
@@ -21,11 +21,11 @@ public abstract class AsyncEventChannel {
     }
 
     protected Set<BlockingQueue<?>> getQueues() {
-        return queues.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
+        return queues.computeIfAbsent(eventName, k -> new CopyOnWriteArraySet<>());
     }
 
     protected void addQueue(BlockingQueue<?> queue) {
-        Set<BlockingQueue<?>> set = queues.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
+        Set<BlockingQueue<?>> set = queues.computeIfAbsent(eventName, k -> new CopyOnWriteArraySet<>());
         set.add(queue);
     }
 }

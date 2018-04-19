@@ -3,7 +3,7 @@ package io.pivotal.pal.data.rentaltruck.framework.event;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 public abstract class SyncEventChannel {
 
@@ -30,7 +30,7 @@ public abstract class SyncEventChannel {
     }
 
     protected void registerSubscriber(SyncEventSubscriberAdapter<Object, Object> subscriber) {
-        Set<SyncEventSubscriberAdapter<Object, Object>> set = subscribers.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
+        Set<SyncEventSubscriberAdapter<Object, Object>> set = subscribers.computeIfAbsent(eventName, k -> new CopyOnWriteArraySet<>());
         set.add(subscriber);
     }
 }
