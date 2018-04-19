@@ -14,7 +14,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,11 +39,9 @@ public class CreateReservationCommandControllerTest {
                 .handleCommand(any());
 
         CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
-                "some-pickup-city",
-                "some-pickup-state",
+                "some-pickup-store-id",
                 "some-pickup-date",
-                "some-dropoff-city",
-                "some-dropoff-state",
+                "some-dropoff-store-id",
                 "some-dropoff-date",
                 "some-truck-type",
                 "some-customer-name"

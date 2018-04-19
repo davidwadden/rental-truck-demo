@@ -7,30 +7,24 @@ import java.util.Objects;
 public class ReservationRequestedEvent {
 
     private final String confirmationNumber;
-    private final String pickupCity;
-    private final String pickupState;
+    private final String pickupStoreId;
     private final String pickupDate;
-    private final String dropoffCity;
-    private final String dropoffState;
+    private final String dropoffStoreId;
     private final String dropoffDate;
     private final String truckType;
     private final String customerName;
 
     public ReservationRequestedEvent(@JsonProperty("confirmationNumber") String confirmationNumber,
-                                     @JsonProperty("pickupCity") String pickupCity,
-                                     @JsonProperty("pickupState") String pickupState,
+                                     @JsonProperty("pickupStoreId") String pickupStoreId,
                                      @JsonProperty("pickupDate") String pickupDate,
-                                     @JsonProperty("dropoffCity") String dropoffCity,
-                                     @JsonProperty("dropoffState") String dropoffState,
+                                     @JsonProperty("dropoffStoreId") String dropoffStoreId,
                                      @JsonProperty("dropoffDate") String dropoffDate,
                                      @JsonProperty("truckType") String truckType,
                                      @JsonProperty("customerName") String customerName) {
         this.confirmationNumber = confirmationNumber;
-        this.pickupCity = pickupCity;
-        this.pickupState = pickupState;
+        this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
-        this.dropoffCity = dropoffCity;
-        this.dropoffState = dropoffState;
+        this.dropoffStoreId = dropoffStoreId;
         this.dropoffDate = dropoffDate;
         this.truckType = truckType;
         this.customerName = customerName;
@@ -40,24 +34,16 @@ public class ReservationRequestedEvent {
         return confirmationNumber;
     }
 
-    public String getPickupCity() {
-        return pickupCity;
-    }
-
-    public String getPickupState() {
-        return pickupState;
+    public String getPickupStoreId() {
+        return pickupStoreId;
     }
 
     public String getPickupDate() {
         return pickupDate;
     }
 
-    public String getDropoffCity() {
-        return dropoffCity;
-    }
-
-    public String getDropoffState() {
-        return dropoffState;
+    public String getDropoffStoreId() {
+        return dropoffStoreId;
     }
 
     public String getDropoffDate() {
@@ -78,11 +64,9 @@ public class ReservationRequestedEvent {
         if (o == null || getClass() != o.getClass()) return false;
         ReservationRequestedEvent that = (ReservationRequestedEvent) o;
         return Objects.equals(confirmationNumber, that.confirmationNumber) &&
-                Objects.equals(pickupCity, that.pickupCity) &&
-                Objects.equals(pickupState, that.pickupState) &&
+                Objects.equals(pickupStoreId, that.pickupStoreId) &&
                 Objects.equals(pickupDate, that.pickupDate) &&
-                Objects.equals(dropoffCity, that.dropoffCity) &&
-                Objects.equals(dropoffState, that.dropoffState) &&
+                Objects.equals(dropoffStoreId, that.dropoffStoreId) &&
                 Objects.equals(dropoffDate, that.dropoffDate) &&
                 Objects.equals(truckType, that.truckType) &&
                 Objects.equals(customerName, that.customerName);
@@ -90,18 +74,16 @@ public class ReservationRequestedEvent {
 
     @Override
     public int hashCode() {
-        return Objects.hash(confirmationNumber, pickupCity, pickupState, pickupDate, dropoffCity, dropoffState, dropoffDate, truckType, customerName);
+        return Objects.hash(confirmationNumber, pickupStoreId, pickupDate, dropoffStoreId, dropoffDate, truckType, customerName);
     }
 
     @Override
     public String toString() {
         return "ReservationRequestedEvent{" +
                 "confirmationNumber='" + confirmationNumber + '\'' +
-                ", pickupCity='" + pickupCity + '\'' +
-                ", pickupState='" + pickupState + '\'' +
+                ", pickupStoreId='" + pickupStoreId + '\'' +
                 ", pickupDate='" + pickupDate + '\'' +
-                ", dropoffCity='" + dropoffCity + '\'' +
-                ", dropoffState='" + dropoffState + '\'' +
+                ", dropoffStoreId='" + dropoffStoreId + '\'' +
                 ", dropoffDate='" + dropoffDate + '\'' +
                 ", truckType='" + truckType + '\'' +
                 ", customerName='" + customerName + '\'' +

@@ -37,11 +37,9 @@ public class CreateReservationCommandServiceTest {
                 .make();
 
         CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
-                "some-pickup-city",
-                "some-pickup-state",
+                "some-pickup-store-id",
                 "some-pickup-date",
-                "some-dropoff-city",
-                "some-dropoff-state",
+                "some-dropoff-store-id",
                 "some-dropoff-date",
                 "some-truck-type",
                 "some-customer-name"
@@ -56,11 +54,9 @@ public class CreateReservationCommandServiceTest {
 
         ReservationRequestedEvent expectedEvent = new ReservationRequestedEvent(
                 expectedConfirmationNumber,
-                "some-pickup-city",
-                "some-pickup-state",
+                "some-pickup-store-id",
                 "some-pickup-date",
-                "some-dropoff-city",
-                "some-dropoff-state",
+                "some-dropoff-store-id",
                 "some-dropoff-date",
                 "some-truck-type",
                 "some-customer-name"

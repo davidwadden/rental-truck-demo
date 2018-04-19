@@ -22,11 +22,9 @@ public class CreateReservationCommandService {
 
         ReservationRequestedEvent event = new ReservationRequestedEvent(
                 confirmationNumber,
-                commandDto.getPickupCity(),
-                commandDto.getPickupState(),
+                commandDto.getPickupStoreId(),
                 commandDto.getPickupDate(),
-                commandDto.getDropoffCity(),
-                commandDto.getDropoffState(),
+                commandDto.getDropoffStoreId(),
                 commandDto.getDropoffDate(),
                 commandDto.getTruckType(),
                 commandDto.getCustomerName()
