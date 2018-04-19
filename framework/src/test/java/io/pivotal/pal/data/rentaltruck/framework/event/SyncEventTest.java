@@ -9,12 +9,16 @@ public class SyncEventTest {
 
     private static final String eventName = "test";
 
-    private DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<String, String>(eventName);
-    private Handler handler = new Handler();
-    private SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(eventName, handler);
+    private DefaultSyncEventPublisher<String, String> publisher;
+    private Handler handler;
+    private SyncEventSubscriberAdapter<String, String> subscriber;
 
     @Before
     public void setUp() {
+        publisher = new DefaultSyncEventPublisher<>(eventName);
+        handler = new Handler();
+        subscriber = new SyncEventSubscriberAdapter<>(eventName, handler);
+
         handler.setData(null);
     }
 

@@ -11,11 +11,14 @@ public class AsyncEventTest {
 
     private String data;
 
-    private DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<String>(eventName);
-    private AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(eventName, new Handler());
+    private DefaultAsyncEventPublisher<String> publisher;
+    private AsyncEventSubscriberAdapter<String> subscriber;
 
     @Before
     public void setUp() {
+        publisher = new DefaultAsyncEventPublisher<>(eventName);
+        subscriber = new AsyncEventSubscriberAdapter<>(eventName, new Handler());
+
         data = null;
     }
 
