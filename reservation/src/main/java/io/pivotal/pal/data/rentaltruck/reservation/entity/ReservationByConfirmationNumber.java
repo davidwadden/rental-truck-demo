@@ -40,6 +40,9 @@ public class ReservationByConfirmationNumber {
     @Column("customer_name")
     private String customerName;
 
+    @Column("creditcard_number")
+    private String creditCardNumber;
+
     public ReservationByConfirmationNumber(String confirmationNumber,
                                            String status,
                                            String pickupCity,
@@ -49,7 +52,7 @@ public class ReservationByConfirmationNumber {
                                            String dropoffState,
                                            LocalDate dropoffDate,
                                            String truckType,
-                                           String customerName) {
+                                           String customerName, String creditCardNumber) {
         this.confirmationNumber = confirmationNumber;
         this.status = status;
         this.pickupCity = pickupCity;
@@ -60,19 +63,7 @@ public class ReservationByConfirmationNumber {
         this.dropoffDate = dropoffDate;
         this.truckType = truckType;
         this.customerName = customerName;
-    }
-
-    private ReservationByConfirmationNumber() {
-        this.confirmationNumber = null;
-        this.status = null;
-        this.pickupCity = null;
-        this.pickupState = null;
-        this.pickupDate = null;
-        this.dropoffCity = null;
-        this.dropoffState = null;
-        this.dropoffDate = null;
-        this.truckType = null;
-        this.customerName = null;
+        this.creditCardNumber = creditCardNumber;
     }
 
     public String getConfirmationNumber() {
@@ -151,6 +142,14 @@ public class ReservationByConfirmationNumber {
         this.customerName = customerName;
     }
 
+    public String getCreditCardNumber() {
+        return creditCardNumber;
+    }
+
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -177,6 +176,7 @@ public class ReservationByConfirmationNumber {
                 ", dropoffDate=" + dropoffDate +
                 ", truckType='" + truckType + '\'' +
                 ", customerName='" + customerName + '\'' +
+                ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
     }
 }

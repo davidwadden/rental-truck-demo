@@ -2,12 +2,16 @@ package io.pivotal.pal.data.rentaltruck.reservation.handler.creditcardverifier;
 
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
+import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardFailedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardVerifiedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationInitializedEvent;
+import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.service.creditcard.CreditCardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 /**
  * This event handler subscribes to the {@link ReservationInitializedEvent}, upserts the
@@ -24,21 +28,43 @@ public class CreditCardVerifierEventHandler implements AsyncEventHandler<Reserva
 
     private final AsyncEventPublisher<CreditCardVerifiedEvent> creditCardVerifiedEventPublisher;
     private final AsyncEventPublisher<CreditCardFailedEvent> creditCardFailedEventPublisher;
+    private final ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository;
+    private final CreditCardService creditCardService;
 
     public CreditCardVerifierEventHandler(AsyncEventPublisher<CreditCardVerifiedEvent> creditCardVerifiedEventPublisher,
-                                          AsyncEventPublisher<CreditCardFailedEvent> creditCardFailedEventPublisher) {
+                                          AsyncEventPublisher<CreditCardFailedEvent> creditCardFailedEventPublisher,
+                                          ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository,
+                                          CreditCardService creditCardService) {
         this.creditCardVerifiedEventPublisher = creditCardVerifiedEventPublisher;
         this.creditCardFailedEventPublisher = creditCardFailedEventPublisher;
+        this.reservationByConfirmationNumberRepository = reservationByConfirmationNumberRepository;
+        this.creditCardService = creditCardService;
     }
 
     @Override
     public void onEvent(ReservationInitializedEvent data) {
         logger.info("reservationRequested event: {}:", data);
 
+        String confirmationNumber = data.getConfirmationNumber();
+
         // de-dup by updating record to status=processing (abort if already processing status)
+        ReservationByConfirmationNumber reservation = reservationByConfirmationNumberRepository.findByConfirmationNumber(confirmationNumber);
+        Assert.notNull(reservation, "Reservation '" + confirmationNumber + "' not found");
 
         // verify credit card rest template to 3rd party API
-        // if success, emit credit card verified message downstream
-        // if failed, emit credit card failed event
+        if (reservation.getStatus().equals("PROCESSING")) {
+            logger.warn("already processing reservation {}", reservation.getConfirmationNumber());
+        } else {
+            reservation.setStatus("PROCESSING");
+            reservationByConfirmationNumberRepository.save(reservation);
+            if (creditCardService.validateCreditCard(reservation.getCreditCardNumber(), 0.0 /*TODO: real value*/)) {
+                // if success, emit credit card verified message downstream
+                creditCardVerifiedEventPublisher.publish(new CreditCardVerifiedEvent());
+            } else {
+                // if failed, emit credit card failed event
+                creditCardFailedEventPublisher.publish(new CreditCardFailedEvent());
+            }
+        }
+
     }
 }
