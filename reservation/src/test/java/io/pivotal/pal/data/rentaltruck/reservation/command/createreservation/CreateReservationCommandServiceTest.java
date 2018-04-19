@@ -9,10 +9,11 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CreateReservationCommandServiceTest {
@@ -38,9 +39,9 @@ public class CreateReservationCommandServiceTest {
 
         CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
                 "some-pickup-store-id",
-                "some-pickup-date",
+                "2018-01-01",
                 "some-dropoff-store-id",
-                "some-dropoff-date",
+                "2018-02-01",
                 "some-truck-type",
                 "some-customer-name"
         );
@@ -55,9 +56,9 @@ public class CreateReservationCommandServiceTest {
         ReservationRequestedEvent expectedEvent = new ReservationRequestedEvent(
                 expectedConfirmationNumber,
                 "some-pickup-store-id",
-                "some-pickup-date",
+                LocalDate.of(2018, 01, 01),
                 "some-dropoff-store-id",
-                "some-dropoff-date",
+                LocalDate.of(2018, 02, 01),
                 "some-truck-type",
                 "some-customer-name"
         );

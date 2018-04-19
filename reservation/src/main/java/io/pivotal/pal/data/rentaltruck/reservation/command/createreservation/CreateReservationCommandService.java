@@ -4,6 +4,8 @@ import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationRequestedEvent;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class CreateReservationCommandService {
 
@@ -23,9 +25,9 @@ public class CreateReservationCommandService {
         ReservationRequestedEvent event = new ReservationRequestedEvent(
                 confirmationNumber,
                 commandDto.getPickupStoreId(),
-                commandDto.getPickupDate(),
+                LocalDate.parse(commandDto.getPickupDate()),
                 commandDto.getDropoffStoreId(),
-                commandDto.getDropoffDate(),
+                LocalDate.parse(commandDto.getDropoffDate()),
                 commandDto.getTruckType(),
                 commandDto.getCustomerName()
         );

@@ -1,26 +1,25 @@
 package io.pivotal.pal.data.rentaltruck.reservation.event;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ReservationRequestedEvent {
 
     private final String confirmationNumber;
     private final String pickupStoreId;
-    private final String pickupDate;
+    private final LocalDate pickupDate;
     private final String dropoffStoreId;
-    private final String dropoffDate;
+    private final LocalDate dropoffDate;
     private final String truckType;
     private final String customerName;
 
-    public ReservationRequestedEvent(@JsonProperty("confirmationNumber") String confirmationNumber,
-                                     @JsonProperty("pickupStoreId") String pickupStoreId,
-                                     @JsonProperty("pickupDate") String pickupDate,
-                                     @JsonProperty("dropoffStoreId") String dropoffStoreId,
-                                     @JsonProperty("dropoffDate") String dropoffDate,
-                                     @JsonProperty("truckType") String truckType,
-                                     @JsonProperty("customerName") String customerName) {
+    public ReservationRequestedEvent(String confirmationNumber,
+                                     String pickupStoreId,
+                                     LocalDate pickupDate,
+                                     String dropoffStoreId,
+                                     LocalDate dropoffDate,
+                                     String truckType,
+                                     String customerName) {
         this.confirmationNumber = confirmationNumber;
         this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
@@ -38,7 +37,7 @@ public class ReservationRequestedEvent {
         return pickupStoreId;
     }
 
-    public String getPickupDate() {
+    public LocalDate getPickupDate() {
         return pickupDate;
     }
 
@@ -46,7 +45,7 @@ public class ReservationRequestedEvent {
         return dropoffStoreId;
     }
 
-    public String getDropoffDate() {
+    public LocalDate getDropoffDate() {
         return dropoffDate;
     }
 
