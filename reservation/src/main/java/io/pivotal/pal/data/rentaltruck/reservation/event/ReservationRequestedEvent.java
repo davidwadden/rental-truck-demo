@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class ReservationCreatedEvent {
+public class ReservationRequestedEvent {
 
     private final String confirmationNumber;
     private final String pickupCity;
@@ -16,15 +16,15 @@ public class ReservationCreatedEvent {
     private final String truckType;
     private final String customerName;
 
-    public ReservationCreatedEvent(@JsonProperty("confirmationNumber") String confirmationNumber,
-                                   @JsonProperty("pickupCity") String pickupCity,
-                                   @JsonProperty("pickupState") String pickupState,
-                                   @JsonProperty("pickupDate") String pickupDate,
-                                   @JsonProperty("dropoffCity") String dropoffCity,
-                                   @JsonProperty("dropoffState") String dropoffState,
-                                   @JsonProperty("dropoffDate") String dropoffDate,
-                                   @JsonProperty("truckType") String truckType,
-                                   @JsonProperty("customerName") String customerName) {
+    public ReservationRequestedEvent(@JsonProperty("confirmationNumber") String confirmationNumber,
+                                     @JsonProperty("pickupCity") String pickupCity,
+                                     @JsonProperty("pickupState") String pickupState,
+                                     @JsonProperty("pickupDate") String pickupDate,
+                                     @JsonProperty("dropoffCity") String dropoffCity,
+                                     @JsonProperty("dropoffState") String dropoffState,
+                                     @JsonProperty("dropoffDate") String dropoffDate,
+                                     @JsonProperty("truckType") String truckType,
+                                     @JsonProperty("customerName") String customerName) {
         this.confirmationNumber = confirmationNumber;
         this.pickupCity = pickupCity;
         this.pickupState = pickupState;
@@ -76,7 +76,7 @@ public class ReservationCreatedEvent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReservationCreatedEvent that = (ReservationCreatedEvent) o;
+        ReservationRequestedEvent that = (ReservationRequestedEvent) o;
         return Objects.equals(confirmationNumber, that.confirmationNumber) &&
                 Objects.equals(pickupCity, that.pickupCity) &&
                 Objects.equals(pickupState, that.pickupState) &&
@@ -95,7 +95,7 @@ public class ReservationCreatedEvent {
 
     @Override
     public String toString() {
-        return "ReservationCreatedEvent{" +
+        return "ReservationRequestedEvent{" +
                 "confirmationNumber='" + confirmationNumber + '\'' +
                 ", pickupCity='" + pickupCity + '\'' +
                 ", pickupState='" + pickupState + '\'' +

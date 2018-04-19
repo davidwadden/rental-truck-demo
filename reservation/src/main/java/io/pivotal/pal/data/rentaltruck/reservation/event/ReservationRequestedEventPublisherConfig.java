@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ReservationCreatedEventPublisherConfig {
+public class ReservationRequestedEventPublisherConfig {
 
     @Bean
-    public AsyncEventPublisher<ReservationCreatedEvent> reservationCreatedEventPublisher() {
+    public AsyncEventPublisher<ReservationRequestedEvent> reservationCreatedEventPublisher() {
         return new DefaultAsyncEventPublisher<>("reservationCreated");
     }
 }
