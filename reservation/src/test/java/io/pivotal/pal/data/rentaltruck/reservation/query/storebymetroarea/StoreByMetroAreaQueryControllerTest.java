@@ -1,5 +1,7 @@
-package io.pivotal.pal.data.rentaltruck.reservation.query.dropoffstore;
+package io.pivotal.pal.data.rentaltruck.reservation.query.storebymetroarea;
 
+import io.pivotal.pal.data.rentaltruck.reservation.repo.StoreByMetroAreaProjection;
+import io.pivotal.pal.data.rentaltruck.reservation.repo.StoreByMetroAreaRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,49 +20,48 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class StoreByLocationQueryControllerTest {
+public class StoreByMetroAreaQueryControllerTest {
 
     @Mock
-    private StoreByLocationQueryRepository mockRepository;
+    private StoreByMetroAreaRepository mockRepository;
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
-        StoreByLocationQueryController controller = new StoreByLocationQueryController(mockRepository);
+        StoreByMetroAreaQueryController controller = new StoreByMetroAreaQueryController(mockRepository);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
     public void listStoresByLocation() throws Exception {
-        StoreByLocationProjection storeProjection = makeStoreByLocationProjection();
+        StoreByMetroAreaProjection storeProjection = makeStoreByMetroAreaProjection();
         doReturn(singletonList(storeProjection))
                 .when(mockRepository)
-                .findAllProjectedByLocation(any(), any());
+                .findAllProjectedByLocation(any());
 
         mockMvc
                 .perform(
-                        get("/stores-by-location")
-                                .param("city", "some-city")
-                                .param("state", "some-state")
+                        get("/stores-by-metro-area")
+                                .param("metroArea", "some-metro-area")
                                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andReturn();
 
-        verify(mockRepository).findAllProjectedByLocation("some-city", "some-state");
+        verify(mockRepository).findAllProjectedByLocation("some-metro-area");
     }
 
-    private static StoreByLocationProjection makeStoreByLocationProjection() {
-        return new StoreByLocationProjection() {
+    private static StoreByMetroAreaProjection makeStoreByMetroAreaProjection() {
+        return new StoreByMetroAreaProjection() {
             @Override
             public String getStoreId() {
                 return "some-store-id";
             }
 
             @Override
-            public String getAddress() {
-                return "some-address";
+            public String getHoursOfOperation() {
+                return "some-hours-of-operation";
             }
 
             @Override
