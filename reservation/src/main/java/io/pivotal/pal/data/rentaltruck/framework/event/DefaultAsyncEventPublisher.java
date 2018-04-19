@@ -11,8 +11,8 @@ public class DefaultAsyncEventPublisher<T> extends AsyncEventChannel implements 
 
     public void publish(T data) {
         Set<BlockingQueue<?>> queues = getQueues();
-        for (BlockingQueue<?> queue: queues) {
-            ((BlockingQueue<T>)queue).offer(data);
+        for (BlockingQueue<?> queue : queues) {
+            ((BlockingQueue<T>) queue).offer(data);
         }
     }
 }

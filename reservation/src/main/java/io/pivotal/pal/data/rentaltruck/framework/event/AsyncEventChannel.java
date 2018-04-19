@@ -8,8 +8,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class AsyncEventChannel {
 
-    private String eventName;
     private static Map<String, Set<BlockingQueue<?>>> queues = new ConcurrentHashMap<>();
+
+    private String eventName;
 
     public AsyncEventChannel(String eventName) {
         this.eventName = eventName;

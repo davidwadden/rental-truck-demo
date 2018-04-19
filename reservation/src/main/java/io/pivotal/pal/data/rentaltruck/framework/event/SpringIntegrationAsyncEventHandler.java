@@ -1,5 +1,6 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -15,6 +16,9 @@ public class SpringIntegrationAsyncEventHandler<T> implements AsyncEventHandler<
 
     @Override
     public void onEvent(T data) {
-        channel.send(MessageBuilder.withPayload(data).setHeader("eventName", eventName).build());
+        Message<T> message = MessageBuilder.withPayload(data)
+                .setHeader("eventName", eventName)
+                .build();
+        channel.send(message);
     }
 }

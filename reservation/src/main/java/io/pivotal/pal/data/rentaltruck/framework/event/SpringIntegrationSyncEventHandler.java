@@ -1,5 +1,6 @@
 package io.pivotal.pal.data.rentaltruck.framework.event;
 
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -15,7 +16,11 @@ public class SpringIntegrationSyncEventHandler<C, R> implements SyncEventHandler
 
     @Override
     public R onEvent(C data) {
-        channel.send(MessageBuilder.withPayload(data).setHeader("eventName", eventName).build());
+        Message<C> message = MessageBuilder.withPayload(data)
+                .setHeader("eventName", eventName)
+                .build();
+        channel.send(message);
+
         return null;
     }
 }

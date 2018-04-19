@@ -7,29 +7,30 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public abstract class SyncEventChannel {
 
+    private static Map<String, Set<SyncEventSubscriberAdapter<Object, Object>>> subscribers = new ConcurrentHashMap<>();
+
     private String eventName;
-    private static Map<String, Set<SyncEventSubscriberAdapter<Object,Object>>> subscribers = new ConcurrentHashMap<>();
+
+    protected SyncEventChannel(String eventName) {
+        this.eventName = eventName;
+    }
 
     public String getEventName() {
         return eventName;
     }
 
-    protected void registerSubscriber(SyncEventSubscriberAdapter<Object,Object> subscriber) {
-        Set<SyncEventSubscriberAdapter<Object,Object>> set = subscribers.computeIfAbsent(eventName, k-> new ConcurrentSkipListSet<>());
-        set.add(subscriber);
-    }
-
-    protected Set<SyncEventSubscriberAdapter<Object,Object>> getSubscribers() {
-        Set<SyncEventSubscriberAdapter<Object,Object>> set = subscribers.get(eventName);
+    protected Set<SyncEventSubscriberAdapter<Object, Object>> getSubscribers() {
+        Set<SyncEventSubscriberAdapter<Object, Object>> set = subscribers.get(eventName);
 
         if (set == null) {
-            throw new IllegalArgumentException("Subscriber for event "+eventName+" not found");
+            throw new IllegalArgumentException("Subscriber for event " + eventName + " not found");
         }
 
         return set;
     }
 
-    protected SyncEventChannel(String eventName) {
-        this.eventName = eventName;
+    protected void registerSubscriber(SyncEventSubscriberAdapter<Object, Object> subscriber) {
+        Set<SyncEventSubscriberAdapter<Object, Object>> set = subscribers.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
+        set.add(subscriber);
     }
 }

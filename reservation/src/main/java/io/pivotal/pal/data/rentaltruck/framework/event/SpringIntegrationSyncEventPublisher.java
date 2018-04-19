@@ -19,7 +19,10 @@ public class SpringIntegrationSyncEventPublisher<C, R> extends DefaultSyncEventP
         R response = publish(data);
 
         if (response != null) {
-            output.send(MessageBuilder.withPayload(response).setHeader("eventName", getEventName()).build());
+            Message<R> outputMessage = MessageBuilder.withPayload(response)
+                    .setHeader("eventName", getEventName())
+                    .build();
+            output.send(outputMessage);
         }
     }
 }
