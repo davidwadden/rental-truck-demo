@@ -12,15 +12,9 @@ public class TruckTypeByLocationAndDate {
     @PrimaryKey
     private final TruckTypeByLocationAndDateKey key;
 
-    /**
-     * This column should be marked Static in CQL.  Spring Data does not support this
-     */
     @Column("truck_make")
     private final String truckMake;
 
-    /**
-     * This column should be marked Static in CQL.  Spring Data does not support this
-     */
     @Column("truck_model")
     private final String truckModel;
 
