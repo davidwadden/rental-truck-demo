@@ -1,4 +1,4 @@
 package io.pivotal.pal.data.rentaltruck.reservation.event;
 
-public class ReservationConfirmedEvent {
+public class ReservationValidatedEvent {
 }
