@@ -32,4 +32,14 @@ public class EventPublisherConfig {
     public AsyncEventPublisher<ReservationValidatedEvent> reservationValidatedEventPublisher() {
         return new DefaultAsyncEventPublisher<>("reservationValidated");
     }
+
+    @Bean
+    public AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventPublisher() {
+        return new DefaultAsyncEventPublisher<>("truckAvailable");
+    }
+
+    @Bean
+    public AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventPublisher() {
+        return new DefaultAsyncEventPublisher<>("truckNotAvailable");
+    }
 }
