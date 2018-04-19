@@ -7,10 +7,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SyncEventTest {
 
+    private static final String eventName = "test";
+
     private DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<String, String>(eventName);
     private Handler handler = new Handler();
     private SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(eventName, handler);
-    private static final String eventName = "test";
 
     @Before
     public void setUp() {

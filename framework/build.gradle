@@ -1,9 +1,8 @@
 apply plugin: 'org.springframework.boot'
 
-dependencies {
-    compile(project(':framework'))
+bootRepackage.enabled = false
 
-    compile('org.springframework.boot:spring-boot-starter-web')
+dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-cassandra')
     compile('org.springframework.cloud:spring-cloud-stream')
     compile('org.springframework.cloud:spring-cloud-stream-binder-kafka')

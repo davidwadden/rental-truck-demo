@@ -7,12 +7,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncEventTest {
 
+    private static final String eventName = "test";
+
     private String data;
 
     private DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<String>(eventName);
     private AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(eventName, new Handler());
-
-    private static final String eventName = "test";
 
     @Before
     public void setUp() {
