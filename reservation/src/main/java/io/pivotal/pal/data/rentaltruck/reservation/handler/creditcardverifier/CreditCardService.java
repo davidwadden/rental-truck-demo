@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.service.creditcard;
+package io.pivotal.pal.data.rentaltruck.reservation.handler.creditcardverifier;
 
 import org.springframework.stereotype.Service;
 
