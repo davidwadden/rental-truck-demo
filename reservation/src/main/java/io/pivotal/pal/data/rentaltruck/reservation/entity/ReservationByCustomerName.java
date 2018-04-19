@@ -21,20 +21,14 @@ public class ReservationByCustomerName {
     @Column("status")
     private String status;
 
-    @Column("pickup_city")
-    private String pickupCity;
-
-    @Column("pickup_state")
-    private String pickupState;
+    @Column("pickup_store_id")
+    private String pickupStoreId;
 
     @Column("pickup_date")
     private LocalDate pickupDate;
 
-    @Column("dropoff_city")
-    private String dropoffCity;
-
-    @Column("dropoff_state")
-    private String dropoffState;
+    @Column("dropoff_store_id")
+    private String dropoffStoreId;
 
     @Column("dropoff_date")
     private LocalDate dropoffDate;
@@ -42,34 +36,33 @@ public class ReservationByCustomerName {
     @Column("truck_type")
     private String truckType;
 
+    @Column("credit_card_number")
+    private String creditCardNumber;
+
     public ReservationByCustomerName(ReservationByCustomerNameKey key,
                                      String status,
-                                     String pickupCity,
-                                     String pickupState,
+                                     String pickupStoreId,
                                      LocalDate pickupDate,
-                                     String dropoffCity,
-                                     String dropoffState,
+                                     String dropoffStoreId,
                                      LocalDate dropoffDate,
-                                     String truckType) {
+                                     String truckType,
+                                     String creditCardNumber) {
         this.key = key;
         this.status = status;
-        this.pickupCity = pickupCity;
-        this.pickupState = pickupState;
+        this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
-        this.dropoffCity = dropoffCity;
-        this.dropoffState = dropoffState;
+        this.dropoffStoreId = dropoffStoreId;
         this.dropoffDate = dropoffDate;
         this.truckType = truckType;
+        this.creditCardNumber = creditCardNumber;
     }
 
     private ReservationByCustomerName() {
         this.key = null;
         this.status = null;
-        this.pickupCity = null;
-        this.pickupState = null;
+        this.pickupStoreId = null;
         this.pickupDate = null;
-        this.dropoffCity = null;
-        this.dropoffState = null;
+        this.dropoffStoreId = null;
         this.dropoffDate = null;
         this.truckType = null;
     }
@@ -86,20 +79,12 @@ public class ReservationByCustomerName {
         this.status = status;
     }
 
-    public String getPickupCity() {
-        return pickupCity;
+    public String getPickupStoreId() {
+        return pickupStoreId;
     }
 
-    public void setPickupCity(String pickupCity) {
-        this.pickupCity = pickupCity;
-    }
-
-    public String getPickupState() {
-        return pickupState;
-    }
-
-    public void setPickupState(String pickupState) {
-        this.pickupState = pickupState;
+    public void setPickupStoreId(String pickupStoreId) {
+        this.pickupStoreId = pickupStoreId;
     }
 
     public LocalDate getPickupDate() {
@@ -110,20 +95,12 @@ public class ReservationByCustomerName {
         this.pickupDate = pickupDate;
     }
 
-    public String getDropoffCity() {
-        return dropoffCity;
+    public String getDropoffStoreId() {
+        return dropoffStoreId;
     }
 
-    public void setDropoffCity(String dropoffCity) {
-        this.dropoffCity = dropoffCity;
-    }
-
-    public String getDropoffState() {
-        return dropoffState;
-    }
-
-    public void setDropoffState(String dropoffState) {
-        this.dropoffState = dropoffState;
+    public void setDropoffStoreId(String dropoffStoreId) {
+        this.dropoffStoreId = dropoffStoreId;
     }
 
     public LocalDate getDropoffDate() {
@@ -140,6 +117,14 @@ public class ReservationByCustomerName {
 
     public void setTruckType(String truckType) {
         this.truckType = truckType;
+    }
+
+    public String getCreditCardNumber() {
+        return creditCardNumber;
+    }
+
+    public void setCreditCardNumber(String creditCardNumber) {
+        this.creditCardNumber = creditCardNumber;
     }
 
     @Override
@@ -160,13 +145,12 @@ public class ReservationByCustomerName {
         return "ReservationByCustomerName{" +
                 "key=" + key +
                 ", status='" + status + '\'' +
-                ", pickupCity='" + pickupCity + '\'' +
-                ", pickupState='" + pickupState + '\'' +
+                ", pickupStoreId='" + pickupStoreId + '\'' +
                 ", pickupDate=" + pickupDate +
-                ", dropoffCity='" + dropoffCity + '\'' +
-                ", dropoffState='" + dropoffState + '\'' +
+                ", dropoffStoreId='" + dropoffStoreId + '\'' +
                 ", dropoffDate=" + dropoffDate +
                 ", truckType='" + truckType + '\'' +
+                ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
     }
 }
