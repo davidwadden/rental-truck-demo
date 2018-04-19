@@ -20,12 +20,12 @@ public abstract class AsyncEventChannel {
         return eventName;
     }
 
+    protected Set<BlockingQueue<?>> getQueues() {
+        return queues.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
+    }
+
     protected void addQueue(BlockingQueue<?> queue) {
         Set<BlockingQueue<?>> set = queues.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
         set.add(queue);
-    }
-
-    protected Set<BlockingQueue<?>> getQueues() {
-        return queues.computeIfAbsent(eventName, k -> new ConcurrentSkipListSet<>());
     }
 }
