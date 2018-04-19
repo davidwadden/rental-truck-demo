@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -33,8 +35,11 @@ public class CreateReservationCommandControllerTest {
 
     @Test
     public void createReservation() throws Exception {
+        doReturn("some-confirmation-number")
+                .when(mockService)
+                .handleCommand(any());
+
         CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
-                "some-confirmation-number",
                 "some-pickup-city",
                 "some-pickup-state",
                 "some-pickup-date",

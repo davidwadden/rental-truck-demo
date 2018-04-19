@@ -8,16 +8,20 @@ import org.springframework.stereotype.Service;
 public class CreateReservationCommandService {
 
     private final AsyncEventPublisher<ReservationRequestedEvent> eventPublisher;
+    private final ConfirmationNumberFactory factory;
 
-    public CreateReservationCommandService(AsyncEventPublisher<ReservationRequestedEvent> eventPublisher) {
+    public CreateReservationCommandService(AsyncEventPublisher<ReservationRequestedEvent> eventPublisher,
+                                           ConfirmationNumberFactory factory) {
         this.eventPublisher = eventPublisher;
+        this.factory = factory;
     }
 
-    public void handleCommand(CreateReservationCommandDto commandDto) {
-        // TODO: generate confirmation number and return to caller, append to event
+    public String handleCommand(CreateReservationCommandDto commandDto) {
+
+        String confirmationNumber = factory.make();
 
         ReservationRequestedEvent event = new ReservationRequestedEvent(
-                commandDto.getConfirmationNumber(),
+                confirmationNumber,
                 commandDto.getPickupCity(),
                 commandDto.getPickupState(),
                 commandDto.getPickupDate(),
@@ -28,8 +32,8 @@ public class CreateReservationCommandService {
                 commandDto.getCustomerName()
         );
 
-        // FIXME: emit reservationRequestedEvent
         eventPublisher.publish(event);
-    }
 
+        return confirmationNumber;
+    }
 }

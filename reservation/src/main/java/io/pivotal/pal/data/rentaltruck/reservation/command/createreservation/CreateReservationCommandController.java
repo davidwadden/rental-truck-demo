@@ -23,10 +23,10 @@ public class CreateReservationCommandController {
     public ResponseEntity<Void> createReservation(@RequestBody CreateReservationCommandDto commandDto,
                                                   UriComponentsBuilder uriComponentsBuilder) {
 
-        service.handleCommand(commandDto);
+        String confirmationNumber = service.handleCommand(commandDto);
 
         Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("confirmationNumber", commandDto.getConfirmationNumber());
+        uriVariables.put("confirmationNumber", confirmationNumber);
 
         URI locationUri = uriComponentsBuilder
                 .path("/reservations/{confirmationNumber}")

@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public class CreateReservationCommandDto {
 
-    private final String confirmationNumber;
     private final String pickupCity;
     private final String pickupState;
     private final String pickupDate;
@@ -18,8 +17,7 @@ public class CreateReservationCommandDto {
     private final String customerName;
 
     @JsonCreator
-    public CreateReservationCommandDto(@JsonProperty("confirmationNumber") String confirmationNumber,
-                                       @JsonProperty("pickupCity") String pickupCity,
+    public CreateReservationCommandDto(@JsonProperty("pickupCity") String pickupCity,
                                        @JsonProperty("pickupState") String pickupState,
                                        @JsonProperty("pickupDate") String pickupDate,
                                        @JsonProperty("dropoffCity") String dropoffCity,
@@ -27,7 +25,6 @@ public class CreateReservationCommandDto {
                                        @JsonProperty("dropoffDate") String dropoffDate,
                                        @JsonProperty("truckType") String truckType,
                                        @JsonProperty("customerName") String customerName) {
-        this.confirmationNumber = confirmationNumber;
         this.pickupCity = pickupCity;
         this.pickupState = pickupState;
         this.pickupDate = pickupDate;
@@ -36,10 +33,6 @@ public class CreateReservationCommandDto {
         this.dropoffDate = dropoffDate;
         this.truckType = truckType;
         this.customerName = customerName;
-    }
-
-    public String getConfirmationNumber() {
-        return confirmationNumber;
     }
 
     public String getPickupCity() {
