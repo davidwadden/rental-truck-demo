@@ -13,10 +13,10 @@ public class TruckTypeByLocationAndDate {
     private final TruckTypeByLocationAndDateKey key;
 
     @Column("truck_make")
-    private final String truckMake;
+    private String truckMake;
 
     @Column("truck_model")
-    private final String truckModel;
+    private String truckModel;
 
     public TruckTypeByLocationAndDate(TruckTypeByLocationAndDateKey key, String truckMake, String truckModel) {
         this.key = key;
@@ -38,8 +38,16 @@ public class TruckTypeByLocationAndDate {
         return truckMake;
     }
 
+    public void setTruckMake(String truckMake) {
+        this.truckMake = truckMake;
+    }
+
     public String getTruckModel() {
         return truckModel;
+    }
+
+    public void setTruckModel(String truckModel) {
+        this.truckModel = truckModel;
     }
 
     @Override

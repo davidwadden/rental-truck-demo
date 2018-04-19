@@ -13,10 +13,10 @@ public class StoreByLocationAndDateAndTruckType {
     private final StoreByLocationAndDateAndTruckTypeKey key;
 
     @Column("address")
-    private final String address;
+    private String address;
 
     @Column("description")
-    private final String description;
+    private String description;
 
     public StoreByLocationAndDateAndTruckType(StoreByLocationAndDateAndTruckTypeKey key, String address, String description) {
         this.key = key;
@@ -38,8 +38,16 @@ public class StoreByLocationAndDateAndTruckType {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

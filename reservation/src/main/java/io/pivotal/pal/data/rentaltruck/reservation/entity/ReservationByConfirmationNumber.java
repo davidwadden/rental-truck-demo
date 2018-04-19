@@ -14,34 +14,35 @@ public class ReservationByConfirmationNumber {
     private final String confirmationNumber;
 
     @Column("status")
-    private final String status;
+    private String status;
 
     @Column("pickup_city")
-    private final String pickupCity;
+    private String pickupCity;
 
     @Column("pickup_state")
-    private final String pickupState;
+    private String pickupState;
 
     @Column("pickup_date")
-    private final LocalDate pickupDate;
+    private LocalDate pickupDate;
 
     @Column("dropoff_city")
-    private final String dropoffCity;
+    private String dropoffCity;
 
     @Column("dropoff_state")
-    private final String dropoffState;
+    private String dropoffState;
 
     @Column("dropoff_date")
-    private final LocalDate dropoffDate;
+    private LocalDate dropoffDate;
 
     @Column("truck_type")
-    private final String truckType;
+    private String truckType;
 
     @Column("customer_name")
-    private final String customerName;
+    private String customerName;
 
     public ReservationByConfirmationNumber(String confirmationNumber,
-                                           String status, String pickupCity,
+                                           String status,
+                                           String pickupCity,
                                            String pickupState,
                                            LocalDate pickupDate,
                                            String dropoffCity,
@@ -82,36 +83,72 @@ public class ReservationByConfirmationNumber {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getPickupCity() {
         return pickupCity;
+    }
+
+    public void setPickupCity(String pickupCity) {
+        this.pickupCity = pickupCity;
     }
 
     public String getPickupState() {
         return pickupState;
     }
 
+    public void setPickupState(String pickupState) {
+        this.pickupState = pickupState;
+    }
+
     public LocalDate getPickupDate() {
         return pickupDate;
+    }
+
+    public void setPickupDate(LocalDate pickupDate) {
+        this.pickupDate = pickupDate;
     }
 
     public String getDropoffCity() {
         return dropoffCity;
     }
 
+    public void setDropoffCity(String dropoffCity) {
+        this.dropoffCity = dropoffCity;
+    }
+
     public String getDropoffState() {
         return dropoffState;
+    }
+
+    public void setDropoffState(String dropoffState) {
+        this.dropoffState = dropoffState;
     }
 
     public LocalDate getDropoffDate() {
         return dropoffDate;
     }
 
+    public void setDropoffDate(LocalDate dropoffDate) {
+        this.dropoffDate = dropoffDate;
+    }
+
     public String getTruckType() {
         return truckType;
     }
 
+    public void setTruckType(String truckType) {
+        this.truckType = truckType;
+    }
+
     public String getCustomerName() {
         return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     @Override

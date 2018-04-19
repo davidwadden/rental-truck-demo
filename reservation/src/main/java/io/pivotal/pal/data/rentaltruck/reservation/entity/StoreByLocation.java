@@ -14,10 +14,10 @@ public class StoreByLocation implements Serializable {
     private final StoreByLocationKey key;
 
     @Column
-    private final String address;
+    private String address;
 
     @Column
-    private final String description;
+    private String description;
 
     public StoreByLocation(StoreByLocationKey key, String address, String description) {
         this.key = key;
@@ -39,8 +39,16 @@ public class StoreByLocation implements Serializable {
         return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

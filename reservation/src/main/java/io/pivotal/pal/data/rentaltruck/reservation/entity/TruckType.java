@@ -13,10 +13,10 @@ public class TruckType {
     private final String truckType;
 
     @Column("truck_make")
-    private final String truckMake;
+    private String truckMake;
 
     @Column("truck_model")
-    private final String truckModel;
+    private String truckModel;
 
     public TruckType(String truckType, String truckMake, String truckModel) {
         this.truckType = truckType;
@@ -38,8 +38,16 @@ public class TruckType {
         return truckMake;
     }
 
+    public void setTruckMake(String truckMake) {
+        this.truckMake = truckMake;
+    }
+
     public String getTruckModel() {
         return truckModel;
+    }
+
+    public void setTruckModel(String truckModel) {
+        this.truckModel = truckModel;
     }
 
     @Override
