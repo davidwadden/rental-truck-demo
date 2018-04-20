@@ -20,22 +20,27 @@ public class TruckCountByMetroAreaTruckTypeStoreDateController {
         this.repository = repository;
     }
 
-    @GetMapping("/truck-count-by-metro-area-truck-type-store-date")
-    public Collection<TruckCountByMetroAreaTruckTypeStoreDate> findAllByMetroAreaAndTruckTypeAndStoreIdAndDate(@RequestParam String metroArea,
-                                                                                                               @RequestParam String truckType,
-                                                                                                               @RequestParam String storeId,
-                                                                                                               @RequestParam @DateTimeFormat(iso = DATE) LocalDate reserveDate) {
+    @GetMapping("/truck-count-by-metro-area-truck-type")
+    public Collection<TruckCountByMetroAreaTruckTypeStoreDate> findAllByMetroAreaAndTruckType(@RequestParam String metroArea,
+                                                                                              @RequestParam String truckType) {
 
-        return repository.findAllByMetroAreaAndTruckTypeAndStoreIdAndDate(metroArea, truckType, storeId, reserveDate);
+        return repository.findAllByMetroAreaAndTruckType(metroArea, truckType);
+    }
+
+    @GetMapping("/truck-count-by-metro-area-truck-type-store-date")
+    public Collection<TruckCountByMetroAreaTruckTypeStoreDate> findAllByMetroAreaAndTruckTypeAndDate(@RequestParam String metroArea,
+                                                                                                     @RequestParam String truckType,
+                                                                                                     @RequestParam @DateTimeFormat(iso = DATE) LocalDate reserveDate) {
+
+        return repository.findAllByMetroAreaAndTruckTypeAndDate(metroArea, truckType, reserveDate);
     }
 
     @GetMapping("/truck-count-by-metro-area-truck-type-store-date-range")
-    public Collection<TruckCountByMetroAreaTruckTypeStoreDate> findAllByMetroAreaAndTruckTypeAndStoreIdAndDateRange(@RequestParam String metroArea,
-                                                                                                                    @RequestParam String truckType,
-                                                                                                                    @RequestParam String storeId,
-                                                                                                                    @RequestParam @DateTimeFormat(iso = DATE) LocalDate reserveStartDate,
-                                                                                                                    @RequestParam @DateTimeFormat(iso = DATE) LocalDate reserveEndDate) {
+    public Collection<TruckCountByMetroAreaTruckTypeStoreDate> findAllByMetroAreaAndTruckTypeAndDateRange(@RequestParam String metroArea,
+                                                                                                          @RequestParam String truckType,
+                                                                                                          @RequestParam @DateTimeFormat(iso = DATE) LocalDate reserveStartDate,
+                                                                                                          @RequestParam @DateTimeFormat(iso = DATE) LocalDate reserveEndDate) {
 
-        return repository.findAllByMetroAreaAndTruckTypeAndStoreIdAndDateRange(metroArea, truckType, storeId, reserveStartDate, reserveEndDate);
+        return repository.findAllByMetroAreaAndTruckTypeAndDateRange(metroArea, truckType, reserveStartDate, reserveEndDate);
     }
 }

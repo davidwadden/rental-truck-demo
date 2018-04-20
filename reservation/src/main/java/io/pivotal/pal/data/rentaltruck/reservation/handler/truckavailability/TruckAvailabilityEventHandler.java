@@ -55,8 +55,8 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
             // query reservations for a given store / truckAvailableEventAsyncEventPublisher type over the desired date span to
             //   see whether there is at least one truckAvailableEventAsyncEventPublisher available to be reserved
             Collection<TruckCountByMetroAreaTruckTypeStoreDate> coll = truckCountByMetroAreaTruckTypeStoreDateRepository.
-                    findAllByMetroAreaAndTruckTypeAndStoreIdAndDateRange(reservation.getMetroArea(),
-                    reservation.getTruckType(), null, reservation.getReserveStartDate(), reservation.getReserveEndDate());
+                    findAllByMetroAreaAndTruckTypeAndDateRange(reservation.getMetroArea(),
+                    reservation.getTruckType(), reservation.getReserveStartDate(), reservation.getReserveEndDate());
 
             final AtomicBoolean hasAvailable = new AtomicBoolean(true);
             coll.stream().forEach(c -> {
