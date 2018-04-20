@@ -3,15 +3,20 @@ package io.pivotal.pal.data.rentaltruck.reservation.handler.truckavailability;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
+import io.pivotal.pal.data.rentaltruck.reservation.entity.TruckCountByMetroAreaTruckTypeStoreDate;
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardVerifiedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationValidatedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckAvailableEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckNotAvailableEvent;
+import io.pivotal.pal.data.rentaltruck.reservation.query.truckcount.TruckCountByMetroAreaTruckTypeStoreDateRepository;
 import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This handler subscribes to {@link CreditCardVerifiedEvent} and checks against Cassandra
@@ -23,15 +28,17 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
     private final AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventAsyncEventPublisher;
     private final AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventAsyncEventPublisher;
     private final ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository;
+    private final TruckCountByMetroAreaTruckTypeStoreDateRepository truckCountByMetroAreaTruckTypeStoreDateRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TruckAvailabilityEventHandler.class);
 
     public TruckAvailabilityEventHandler(AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventAsyncEventPublisher,
                                          AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventAsyncEventPublisher,
-                                         ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository) {
+                                         ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository, TruckCountByMetroAreaTruckTypeStoreDateRepository truckCountByMetroAreaTruckTypeStoreDateRepository) {
         this.truckAvailableEventAsyncEventPublisher = truckAvailableEventAsyncEventPublisher;
         this.truckNotAvailableEventAsyncEventPublisher = truckNotAvailableEventAsyncEventPublisher;
         this.reservationByConfirmationNumberRepository = reservationByConfirmationNumberRepository;
+        this.truckCountByMetroAreaTruckTypeStoreDateRepository = truckCountByMetroAreaTruckTypeStoreDateRepository;
     }
 
     @Override
@@ -45,18 +52,27 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
         if (reservation.getStatus().equals("VALIDATING")) {
             logger.warn("already validating reservation {}", reservation.getConfirmationNumber());
         } else {
-            reservation.setStatus("VALIDATING");
-            reservationByConfirmationNumberRepository.save(reservation);
-
             // query reservations for a given store / truckAvailableEventAsyncEventPublisher type over the desired date span to
             //   see whether there is at least one truckAvailableEventAsyncEventPublisher available to be reserved
-            int availableCount = 0; // TODO
+            Collection<TruckCountByMetroAreaTruckTypeStoreDate> coll = truckCountByMetroAreaTruckTypeStoreDateRepository.
+                    findAllByMetroAreaAndTruckTypeAndStoreIdAndDateRange(reservation.getMetroArea(),
+                    reservation.getTruckType(), null, reservation.getReserveStartDate(), reservation.getReserveEndDate());
 
-            if (availableCount == 0) {
-                truckNotAvailableEventAsyncEventPublisher.publish(new TruckNotAvailableEvent()); // TODO
-            } else {
+            final AtomicBoolean hasAvailable = new AtomicBoolean(true);
+            coll.stream().forEach(c -> {
+                if (c.getCountOnHand() == 0) {
+                    hasAvailable.set(false);
+                }
+            });
+
+            if (hasAvailable.get()) {
                 truckAvailableEventAsyncEventPublisher.publish(new TruckAvailableEvent()); // TODO
+            } else {
+                truckNotAvailableEventAsyncEventPublisher.publish(new TruckNotAvailableEvent()); // TODO
             }
+
+            reservation.setStatus("VALIDATING");
+            reservationByConfirmationNumberRepository.save(reservation);
         }
 
 

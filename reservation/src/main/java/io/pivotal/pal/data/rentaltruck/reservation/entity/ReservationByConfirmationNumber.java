@@ -36,6 +36,9 @@ public class ReservationByConfirmationNumber {
 
     @Column("credit_card_number")
     private String creditCardNumber;
+    private String metroArea;
+    private LocalDate reserveStartDate;
+    private LocalDate reserveEndDate;
 
     public ReservationByConfirmationNumber(String confirmationNumber,
                                            String status,
@@ -163,5 +166,29 @@ public class ReservationByConfirmationNumber {
                 ", customerName='" + customerName + '\'' +
                 ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
+    }
+
+    public String getMetroArea() {
+        return metroArea;
+    }
+
+    public void setMetroArea(String metroArea) {
+        this.metroArea = metroArea;
+    }
+
+    public LocalDate getReserveStartDate() {
+        return reserveStartDate;
+    }
+
+    public void setReserveStartDate(LocalDate reserveStartDate) {
+        this.reserveStartDate = reserveStartDate;
+    }
+
+    public LocalDate getReserveEndDate() {
+        return reserveEndDate;
+    }
+
+    public void setReserveEndDate(LocalDate reserveEndDate) {
+        this.reserveEndDate = reserveEndDate;
     }
 }
