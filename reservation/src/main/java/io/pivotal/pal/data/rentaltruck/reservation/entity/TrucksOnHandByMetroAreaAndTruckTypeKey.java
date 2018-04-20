@@ -14,7 +14,7 @@ import static org.springframework.cassandra.core.PrimaryKeyType.CLUSTERED;
 import static org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED;
 
 @PrimaryKeyClass
-public class TruckCountByMetroAreaTruckTypeStoreDateKey implements Serializable {
+public class TrucksOnHandByMetroAreaAndTruckTypeKey implements Serializable {
 
     @PrimaryKeyColumn(name = "metro_area", ordinal = 0, type = PARTITIONED)
     private final String metroArea;
@@ -29,17 +29,17 @@ public class TruckCountByMetroAreaTruckTypeStoreDateKey implements Serializable 
     @CassandraType(type = DATE)
     private final LocalDate reserveDate;
 
-    public TruckCountByMetroAreaTruckTypeStoreDateKey(String metroArea,
-                                                      String truckType,
-                                                      String storeId,
-                                                      LocalDate reserveDate) {
+    public TrucksOnHandByMetroAreaAndTruckTypeKey(String metroArea,
+                                                  String truckType,
+                                                  String storeId,
+                                                  LocalDate reserveDate) {
         this.metroArea = metroArea;
         this.truckType = truckType;
         this.storeId = storeId;
         this.reserveDate = reserveDate;
     }
 
-    private TruckCountByMetroAreaTruckTypeStoreDateKey() {
+    private TrucksOnHandByMetroAreaAndTruckTypeKey() {
         this.metroArea = null;
         this.truckType = null;
         this.storeId = null;
@@ -66,7 +66,7 @@ public class TruckCountByMetroAreaTruckTypeStoreDateKey implements Serializable 
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TruckCountByMetroAreaTruckTypeStoreDateKey that = (TruckCountByMetroAreaTruckTypeStoreDateKey) o;
+        TrucksOnHandByMetroAreaAndTruckTypeKey that = (TrucksOnHandByMetroAreaAndTruckTypeKey) o;
         return Objects.equals(metroArea, that.metroArea) &&
                 Objects.equals(truckType, that.truckType) &&
                 Objects.equals(storeId, that.storeId) &&
@@ -80,7 +80,7 @@ public class TruckCountByMetroAreaTruckTypeStoreDateKey implements Serializable 
 
     @Override
     public String toString() {
-        return "TruckCountByMetroAreaTruckTypeStoreDateKey{" +
+        return "TrucksOnHandByMetroAreaAndTruckTypeKey{" +
                 "metroArea='" + metroArea + '\'' +
                 ", truckType='" + truckType + '\'' +
                 ", storeId='" + storeId + '\'' +

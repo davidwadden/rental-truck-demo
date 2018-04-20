@@ -14,7 +14,7 @@ import static org.springframework.cassandra.core.PrimaryKeyType.CLUSTERED;
 import static org.springframework.cassandra.core.PrimaryKeyType.PARTITIONED;
 
 @PrimaryKeyClass
-public class TruckCountByStoreTruckTypeDateKey implements Serializable {
+public class TrucksOnHandByStoreAndTruckTypeKey implements Serializable {
 
     @PrimaryKeyColumn(name = "store_id", ordinal = 0, type = PARTITIONED)
     private final String storeId;
@@ -26,13 +26,13 @@ public class TruckCountByStoreTruckTypeDateKey implements Serializable {
     @CassandraType(type = DATE)
     private final LocalDate reserveDate;
 
-    public TruckCountByStoreTruckTypeDateKey(String storeId, String truckType, LocalDate reserveDate) {
+    public TrucksOnHandByStoreAndTruckTypeKey(String storeId, String truckType, LocalDate reserveDate) {
         this.storeId = storeId;
         this.truckType = truckType;
         this.reserveDate = reserveDate;
     }
 
-    private TruckCountByStoreTruckTypeDateKey() {
+    private TrucksOnHandByStoreAndTruckTypeKey() {
         this.storeId = null;
         this.truckType = null;
         this.reserveDate = null;
@@ -54,7 +54,7 @@ public class TruckCountByStoreTruckTypeDateKey implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TruckCountByStoreTruckTypeDateKey that = (TruckCountByStoreTruckTypeDateKey) o;
+        TrucksOnHandByStoreAndTruckTypeKey that = (TrucksOnHandByStoreAndTruckTypeKey) o;
         return Objects.equals(storeId, that.storeId) &&
                 Objects.equals(truckType, that.truckType) &&
                 Objects.equals(reserveDate, that.reserveDate);
@@ -67,7 +67,7 @@ public class TruckCountByStoreTruckTypeDateKey implements Serializable {
 
     @Override
     public String toString() {
-        return "TruckCountByStoreTruckTypeDateKey{" +
+        return "TrucksOnHandByStoreAndTruckTypeKey{" +
                 "storeId='" + storeId + '\'' +
                 ", truckType='" + truckType + '\'' +
                 ", reserveDate=" + reserveDate +

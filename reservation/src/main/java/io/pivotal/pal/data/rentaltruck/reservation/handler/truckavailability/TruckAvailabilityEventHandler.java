@@ -3,12 +3,11 @@ package io.pivotal.pal.data.rentaltruck.reservation.handler.truckavailability;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
-import io.pivotal.pal.data.rentaltruck.reservation.entity.TruckCountByMetroAreaTruckTypeStoreDate;
+import io.pivotal.pal.data.rentaltruck.reservation.entity.TrucksOnHandByMetroAreaAndTruckType;
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardVerifiedEvent;
-import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationValidatedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckAvailableEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckNotAvailableEvent;
-import io.pivotal.pal.data.rentaltruck.reservation.query.truckcount.TruckCountByMetroAreaTruckTypeStoreDateRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.query.trucksonhand.TrucksOnHandByMetroAreaAndTruckTypeRepository;
 import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +27,13 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
     private final AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventAsyncEventPublisher;
     private final AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventAsyncEventPublisher;
     private final ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository;
-    private final TruckCountByMetroAreaTruckTypeStoreDateRepository truckCountByMetroAreaTruckTypeStoreDateRepository;
+    private final TrucksOnHandByMetroAreaAndTruckTypeRepository truckCountByMetroAreaTruckTypeStoreDateRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TruckAvailabilityEventHandler.class);
 
     public TruckAvailabilityEventHandler(AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventAsyncEventPublisher,
                                          AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventAsyncEventPublisher,
-                                         ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository, TruckCountByMetroAreaTruckTypeStoreDateRepository truckCountByMetroAreaTruckTypeStoreDateRepository) {
+                                         ReservationByConfirmationNumberRepository reservationByConfirmationNumberRepository, TrucksOnHandByMetroAreaAndTruckTypeRepository truckCountByMetroAreaTruckTypeStoreDateRepository) {
         this.truckAvailableEventAsyncEventPublisher = truckAvailableEventAsyncEventPublisher;
         this.truckNotAvailableEventAsyncEventPublisher = truckNotAvailableEventAsyncEventPublisher;
         this.reservationByConfirmationNumberRepository = reservationByConfirmationNumberRepository;
@@ -54,7 +53,7 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
         } else {
             // query reservations for a given store / truckAvailableEventAsyncEventPublisher type over the desired date span to
             //   see whether there is at least one truckAvailableEventAsyncEventPublisher available to be reserved
-            Collection<TruckCountByMetroAreaTruckTypeStoreDate> coll = truckCountByMetroAreaTruckTypeStoreDateRepository.
+            Collection<TrucksOnHandByMetroAreaAndTruckType> coll = truckCountByMetroAreaTruckTypeStoreDateRepository.
                     findAllByMetroAreaAndTruckTypeAndDateRange(reservation.getMetroArea(),
                     reservation.getTruckType(), reservation.getReserveStartDate(), reservation.getReserveEndDate());
 
