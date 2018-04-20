@@ -10,36 +10,36 @@ public class EventPublisherConfig {
 
     @Bean
     public AsyncEventPublisher<CreditCardFailedEvent> creditCardFailedEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("creditCardFailed");
+        return new DefaultAsyncEventPublisher<>(EventType.CREDIT_CARD_FAILED.getEventName());
     }
 
     @Bean
     public AsyncEventPublisher<CreditCardVerifiedEvent> creditCardVerifiedEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("creditCardVerified");
+        return new DefaultAsyncEventPublisher<>(EventType.CREDIT_CARD_VERIFIED.getEventName());
     }
 
     @Bean
     public AsyncEventPublisher<ReservationInitializedEvent> reservationInitializedEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("reservationInitialized");
+        return new DefaultAsyncEventPublisher<>(EventType.RESERVATION_INITIALIZED.getEventName());
     }
 
     @Bean
     public AsyncEventPublisher<ReservationRequestedEvent> reservationRequestedEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("reservationRequested");
+        return new DefaultAsyncEventPublisher<>(EventType.RESERVATION_REQUESTED.getEventName());
     }
 
     @Bean
     public AsyncEventPublisher<ReservationValidatedEvent> reservationValidatedEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("reservationValidated");
+        return new DefaultAsyncEventPublisher<>(EventType.RESERVATION_VALIDATED.getEventName());
     }
 
     @Bean
     public AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("truckAvailable");
+        return new DefaultAsyncEventPublisher<>(EventType.TRUCK_AVAILABLE.getEventName());
     }
 
     @Bean
     public AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventPublisher() {
-        return new DefaultAsyncEventPublisher<>("truckNotAvailable");
+        return new DefaultAsyncEventPublisher<>(EventType.TRUCK_NOT_AVAILABLE.getEventName());
     }
 }
