@@ -11,3 +11,7 @@ spring:
       username: cassandra
       password: cassandra
       schema-action: recreate_drop_unused
+
+logging:
+  level:
+    com.datastax: debug

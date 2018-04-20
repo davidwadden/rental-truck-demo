@@ -9,28 +9,27 @@ import java.util.Objects;
 
 import static com.datastax.driver.core.DataType.Name.COUNTER;
 
-@Table("truck_count_by_metro_area_truck_type_store_date")
-public class TruckCountByMetroAreaTruckTypeStoreDate {
+@Table("truck_count_by_store_truck_type_date")
+public class TruckCountByStoreTruckTypeDate {
 
     @PrimaryKey
-    private final TruckCountByMetroAreaTruckTypeStoreDateKey key;
+    private final TruckCountByStoreTruckTypeDateKey key;
 
     @Column("count_on_hand")
     @CassandraType(type = COUNTER)
     private Long countOnHand;
 
-    public TruckCountByMetroAreaTruckTypeStoreDate(TruckCountByMetroAreaTruckTypeStoreDateKey key,
-                                                   Long countOnHand) {
+    public TruckCountByStoreTruckTypeDate(TruckCountByStoreTruckTypeDateKey key, Long countOnHand) {
         this.key = key;
         this.countOnHand = countOnHand;
     }
 
-    private TruckCountByMetroAreaTruckTypeStoreDate() {
+    private TruckCountByStoreTruckTypeDate() {
         this.key = null;
         this.countOnHand = null;
     }
 
-    public TruckCountByMetroAreaTruckTypeStoreDateKey getKey() {
+    public TruckCountByStoreTruckTypeDateKey getKey() {
         return key;
     }
 
@@ -46,7 +45,7 @@ public class TruckCountByMetroAreaTruckTypeStoreDate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TruckCountByMetroAreaTruckTypeStoreDate that = (TruckCountByMetroAreaTruckTypeStoreDate) o;
+        TruckCountByStoreTruckTypeDate that = (TruckCountByStoreTruckTypeDate) o;
         return Objects.equals(key, that.key);
     }
 
@@ -57,7 +56,7 @@ public class TruckCountByMetroAreaTruckTypeStoreDate {
 
     @Override
     public String toString() {
-        return "TruckCountByMetroAreaTruckTypeStoreDate{" +
+        return "TruckCountByStoreTruckTypeDate{" +
                 "key=" + key +
                 ", countOnHand=" + countOnHand +
                 '}';
