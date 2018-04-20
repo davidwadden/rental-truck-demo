@@ -9,28 +9,28 @@ import java.util.Objects;
 
 import static com.datastax.driver.core.DataType.Name.COUNTER;
 
-@Table("count_by_metro_area_truck_type_store_and_date")
-public class CountByMetroAreaTruckTypeStoreAndDate {
+@Table("truck_count_by_metro_area_truck_type_store_date")
+public class TruckCountByMetroAreaTruckTypeStoreDate {
 
     @PrimaryKey
-    private final CountByMetroAreaTruckTypeStoreAndDateKey key;
+    private final TruckCountByMetroAreaTruckTypeStoreDateKey key;
 
     @Column("count_on_hand")
     @CassandraType(type = COUNTER)
     private Integer countOnHand;
 
-    public CountByMetroAreaTruckTypeStoreAndDate(CountByMetroAreaTruckTypeStoreAndDateKey key,
-                                                 Integer countOnHand) {
+    public TruckCountByMetroAreaTruckTypeStoreDate(TruckCountByMetroAreaTruckTypeStoreDateKey key,
+                                                   Integer countOnHand) {
         this.key = key;
         this.countOnHand = countOnHand;
     }
 
-    private CountByMetroAreaTruckTypeStoreAndDate() {
+    private TruckCountByMetroAreaTruckTypeStoreDate() {
         this.key = null;
         this.countOnHand = null;
     }
 
-    public CountByMetroAreaTruckTypeStoreAndDateKey getKey() {
+    public TruckCountByMetroAreaTruckTypeStoreDateKey getKey() {
         return key;
     }
 
@@ -46,7 +46,7 @@ public class CountByMetroAreaTruckTypeStoreAndDate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CountByMetroAreaTruckTypeStoreAndDate that = (CountByMetroAreaTruckTypeStoreAndDate) o;
+        TruckCountByMetroAreaTruckTypeStoreDate that = (TruckCountByMetroAreaTruckTypeStoreDate) o;
         return Objects.equals(key, that.key);
     }
 
@@ -57,7 +57,7 @@ public class CountByMetroAreaTruckTypeStoreAndDate {
 
     @Override
     public String toString() {
-        return "CountByMetroAreaTruckTypeStoreAndDate{" +
+        return "TruckCountByMetroAreaTruckTypeStoreDate{" +
                 "key=" + key +
                 ", countOnHand=" + countOnHand +
                 '}';

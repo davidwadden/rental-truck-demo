@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDate;
 import java.util.Collection;
 
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
+
 @RestController
 public class StoreByLocationAndDateAndTruckTypeQueryController {
 
@@ -20,7 +22,7 @@ public class StoreByLocationAndDateAndTruckTypeQueryController {
     @GetMapping("/stores")
     public Collection<StoreByLocationAndDateAndTruckTypeProjection> findStoresByLocationAndDateAndTruckType(@RequestParam String city,
                                                                                                             @RequestParam String state,
-                                                                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate pickupDate,
+                                                                                                            @RequestParam @DateTimeFormat(iso = DATE) LocalDate pickupDate,
                                                                                                             @RequestParam String truckType) {
 
         return repository.findAllProjectedByLocationAndDateAndTruckType(city, state, pickupDate, truckType);
