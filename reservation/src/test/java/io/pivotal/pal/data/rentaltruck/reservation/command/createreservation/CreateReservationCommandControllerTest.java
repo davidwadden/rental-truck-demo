@@ -39,13 +39,14 @@ public class CreateReservationCommandControllerTest {
                 .handleCommand(any());
 
         CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
+                "some-truck-type",
+                "some-metro-area",
                 "some-pickup-store-id",
                 "some-pickup-date",
                 "some-dropoff-store-id",
                 "some-dropoff-date",
-                "some-truck-type",
-                "some-customer-name"
-        );
+                "some-customer-name",
+                "some-credit-card-number");
         byte[] commandDtoBytes = objectMapper.writeValueAsBytes(commandDto);
 
         mockMvc

@@ -60,8 +60,8 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
                 trucksOnHandRepository.findAllByMetroAreaAndTruckTypeAndDateRange(
                         reservation.getMetroArea(),
                         reservation.getTruckType(),
-                        reservation.getReserveStartDate(),
-                        reservation.getReserveEndDate()
+                        reservation.getPickupDate(),
+                        reservation.getDropoffDate()
                 );
 
         // check whether a given store has availability for the entire date range

@@ -38,13 +38,14 @@ public class CreateReservationCommandServiceTest {
                 .make();
 
         CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
+                "some-truck-type",
+                "some-metro-area",
                 "some-pickup-store-id",
                 "2018-01-01",
                 "some-dropoff-store-id",
                 "2018-02-01",
-                "some-truck-type",
-                "some-customer-name"
-        );
+                "some-customer-name",
+                "some-credit-card-number");
 
         String confirmationNumber = service.handleCommand(commandDto);
 
@@ -55,12 +56,14 @@ public class CreateReservationCommandServiceTest {
 
         ReservationRequestedEvent expectedEvent = new ReservationRequestedEvent(
                 expectedConfirmationNumber,
+                "some-truck-type",
+                "some-metro-area",
                 "some-pickup-store-id",
                 LocalDate.of(2018, 01, 01),
                 "some-dropoff-store-id",
                 LocalDate.of(2018, 02, 01),
-                "some-truck-type",
-                "some-customer-name"
+                "some-customer-name",
+                "some-credit-card-number"
         );
         inOrder.verify(mockPublisher).publish(expectedEvent);
     }

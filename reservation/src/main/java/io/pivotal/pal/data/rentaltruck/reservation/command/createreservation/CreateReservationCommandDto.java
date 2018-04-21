@@ -7,26 +7,40 @@ import java.util.Objects;
 
 public class CreateReservationCommandDto {
 
+    private final String truckType;
+    private final String metroArea;
     private final String pickupStoreId;
     private final String pickupDate;
     private final String dropoffStoreId;
     private final String dropoffDate;
-    private final String truckType;
     private final String customerName;
+    private final String creditCardNumber;
 
     @JsonCreator
-    public CreateReservationCommandDto(@JsonProperty("pickupStoreId") String pickupStoreId,
+    public CreateReservationCommandDto(@JsonProperty("truckType") String truckType,
+                                       @JsonProperty("metroArea") String metroArea,
+                                       @JsonProperty("pickupStoreId") String pickupStoreId,
                                        @JsonProperty("pickupDate") String pickupDate,
                                        @JsonProperty("dropoffStoreId") String dropoffStoreId,
                                        @JsonProperty("dropoffDate") String dropoffDate,
-                                       @JsonProperty("truckType") String truckType,
-                                       @JsonProperty("customerName") String customerName) {
+                                       @JsonProperty("customerName") String customerName,
+                                       @JsonProperty("creditCardNumber") String creditCardNumber) {
+        this.metroArea = metroArea;
         this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
         this.dropoffStoreId = dropoffStoreId;
         this.dropoffDate = dropoffDate;
         this.truckType = truckType;
         this.customerName = customerName;
+        this.creditCardNumber = creditCardNumber;
+    }
+
+    public String getTruckType() {
+        return truckType;
+    }
+
+    public String getMetroArea() {
+        return metroArea;
     }
 
     public String getPickupStoreId() {
@@ -45,12 +59,12 @@ public class CreateReservationCommandDto {
         return dropoffDate;
     }
 
-    public String getTruckType() {
-        return truckType;
-    }
-
     public String getCustomerName() {
         return customerName;
+    }
+
+    public String getCreditCardNumber() {
+        return creditCardNumber;
     }
 
     @Override
@@ -58,28 +72,32 @@ public class CreateReservationCommandDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CreateReservationCommandDto that = (CreateReservationCommandDto) o;
-        return Objects.equals(pickupStoreId, that.pickupStoreId) &&
+        return Objects.equals(truckType, that.truckType) &&
+                Objects.equals(metroArea, that.metroArea) &&
+                Objects.equals(pickupStoreId, that.pickupStoreId) &&
                 Objects.equals(pickupDate, that.pickupDate) &&
                 Objects.equals(dropoffStoreId, that.dropoffStoreId) &&
                 Objects.equals(dropoffDate, that.dropoffDate) &&
-                Objects.equals(truckType, that.truckType) &&
-                Objects.equals(customerName, that.customerName);
+                Objects.equals(customerName, that.customerName) &&
+                Objects.equals(creditCardNumber, that.creditCardNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pickupStoreId, pickupDate, dropoffStoreId, dropoffDate, truckType, customerName);
+        return Objects.hash(truckType, metroArea, pickupStoreId, pickupDate, dropoffStoreId, dropoffDate, customerName, creditCardNumber);
     }
 
     @Override
     public String toString() {
         return "CreateReservationCommandDto{" +
-                "pickupStoreId='" + pickupStoreId + '\'' +
+                "truckType='" + truckType + '\'' +
+                ", metroArea='" + metroArea + '\'' +
+                ", pickupStoreId='" + pickupStoreId + '\'' +
                 ", pickupDate='" + pickupDate + '\'' +
                 ", dropoffStoreId='" + dropoffStoreId + '\'' +
                 ", dropoffDate='" + dropoffDate + '\'' +
-                ", truckType='" + truckType + '\'' +
                 ", customerName='" + customerName + '\'' +
+                ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
     }
 }

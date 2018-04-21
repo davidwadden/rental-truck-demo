@@ -6,31 +6,45 @@ import java.util.Objects;
 public class ReservationRequestedEvent {
 
     private final String confirmationNumber;
+    private final String truckType;
+    private final String metroArea;
     private final String pickupStoreId;
     private final LocalDate pickupDate;
     private final String dropoffStoreId;
     private final LocalDate dropoffDate;
-    private final String truckType;
     private final String customerName;
+    private final String creditCardNumber;
 
     public ReservationRequestedEvent(String confirmationNumber,
+                                     String truckType,
+                                     String metroArea,
                                      String pickupStoreId,
                                      LocalDate pickupDate,
                                      String dropoffStoreId,
                                      LocalDate dropoffDate,
-                                     String truckType,
-                                     String customerName) {
+                                     String customerName,
+                                     String creditCardNumber) {
         this.confirmationNumber = confirmationNumber;
+        this.metroArea = metroArea;
         this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
         this.dropoffStoreId = dropoffStoreId;
         this.dropoffDate = dropoffDate;
         this.truckType = truckType;
         this.customerName = customerName;
+        this.creditCardNumber = creditCardNumber;
     }
 
     public String getConfirmationNumber() {
         return confirmationNumber;
+    }
+
+    public String getTruckType() {
+        return truckType;
+    }
+
+    public String getMetroArea() {
+        return metroArea;
     }
 
     public String getPickupStoreId() {
@@ -49,12 +63,12 @@ public class ReservationRequestedEvent {
         return dropoffDate;
     }
 
-    public String getTruckType() {
-        return truckType;
-    }
-
     public String getCustomerName() {
         return customerName;
+    }
+
+    public String getCreditCardNumber() {
+        return creditCardNumber;
     }
 
     @Override
@@ -63,29 +77,40 @@ public class ReservationRequestedEvent {
         if (o == null || getClass() != o.getClass()) return false;
         ReservationRequestedEvent that = (ReservationRequestedEvent) o;
         return Objects.equals(confirmationNumber, that.confirmationNumber) &&
+                Objects.equals(truckType, that.truckType) &&
+                Objects.equals(metroArea, that.metroArea) &&
                 Objects.equals(pickupStoreId, that.pickupStoreId) &&
                 Objects.equals(pickupDate, that.pickupDate) &&
                 Objects.equals(dropoffStoreId, that.dropoffStoreId) &&
                 Objects.equals(dropoffDate, that.dropoffDate) &&
-                Objects.equals(truckType, that.truckType) &&
-                Objects.equals(customerName, that.customerName);
+                Objects.equals(customerName, that.customerName) &&
+                Objects.equals(creditCardNumber, that.creditCardNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(confirmationNumber, pickupStoreId, pickupDate, dropoffStoreId, dropoffDate, truckType, customerName);
+        return Objects.hash(confirmationNumber,
+                truckType,
+                metroArea,
+                pickupStoreId,
+                pickupDate,
+                dropoffStoreId,
+                dropoffDate, customerName,
+                creditCardNumber);
     }
 
     @Override
     public String toString() {
         return "ReservationRequestedEvent{" +
                 "confirmationNumber='" + confirmationNumber + '\'' +
-                ", pickupStoreId='" + pickupStoreId + '\'' +
-                ", pickupDate='" + pickupDate + '\'' +
-                ", dropoffStoreId='" + dropoffStoreId + '\'' +
-                ", dropoffDate='" + dropoffDate + '\'' +
                 ", truckType='" + truckType + '\'' +
+                ", metroArea='" + metroArea + '\'' +
+                ", pickupStoreId='" + pickupStoreId + '\'' +
+                ", pickupDate=" + pickupDate +
+                ", dropoffStoreId='" + dropoffStoreId + '\'' +
+                ", dropoffDate=" + dropoffDate +
                 ", customerName='" + customerName + '\'' +
+                ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
     }
 }

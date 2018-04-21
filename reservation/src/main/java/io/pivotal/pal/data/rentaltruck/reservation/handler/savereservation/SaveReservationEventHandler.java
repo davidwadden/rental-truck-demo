@@ -37,11 +37,12 @@ public class SaveReservationEventHandler implements AsyncEventHandler<Reservatio
         ReservationByConfirmationNumber reservation = new ReservationByConfirmationNumber(
                 data.getConfirmationNumber(),
                 "INITIALIZED",
+                data.getTruckType(),
+                "stubbed-metro-area",
                 data.getPickupStoreId(),
                 data.getPickupDate(),
                 data.getDropoffStoreId(),
                 data.getDropoffDate(),
-                data.getTruckType(),
                 data.getCustomerName(),
                 "stubbed-credit-card-number"
         );

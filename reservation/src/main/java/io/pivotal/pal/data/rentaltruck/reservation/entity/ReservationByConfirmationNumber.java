@@ -16,6 +16,12 @@ public class ReservationByConfirmationNumber {
     @Column("status")
     private String status;
 
+    @Column("truck_type")
+    private String truckType;
+
+    @Column("metro_area")
+    private String metroArea;
+
     @Column("pickup_store_id")
     private String pickupStoreId;
 
@@ -28,34 +34,30 @@ public class ReservationByConfirmationNumber {
     @Column("dropoff_date")
     private LocalDate dropoffDate;
 
-    @Column("truck_type")
-    private String truckType;
-
     @Column("customer_name")
     private String customerName;
 
     @Column("credit_card_number")
     private String creditCardNumber;
-    private String metroArea;
-    private LocalDate reserveStartDate;
-    private LocalDate reserveEndDate;
 
     public ReservationByConfirmationNumber(String confirmationNumber,
                                            String status,
+                                           String truckType,
+                                           String metroArea,
                                            String pickupStoreId,
                                            LocalDate pickupDate,
                                            String dropoffStoreId,
                                            LocalDate dropoffDate,
-                                           String truckType,
                                            String customerName,
                                            String creditCardNumber) {
         this.confirmationNumber = confirmationNumber;
         this.status = status;
+        this.truckType = truckType;
+        this.metroArea = metroArea;
         this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
         this.dropoffStoreId = dropoffStoreId;
         this.dropoffDate = dropoffDate;
-        this.truckType = truckType;
         this.customerName = customerName;
         this.creditCardNumber = creditCardNumber;
     }
@@ -63,11 +65,12 @@ public class ReservationByConfirmationNumber {
     private ReservationByConfirmationNumber() {
         this.confirmationNumber = null;
         this.status = null;
+        this.truckType = null;
+        this.metroArea = null;
         this.pickupStoreId = null;
         this.pickupDate = null;
         this.dropoffStoreId = null;
         this.dropoffDate = null;
-        this.truckType = null;
         this.customerName = null;
         this.creditCardNumber = null;
     }
@@ -82,6 +85,22 @@ public class ReservationByConfirmationNumber {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTruckType() {
+        return truckType;
+    }
+
+    public void setTruckType(String truckType) {
+        this.truckType = truckType;
+    }
+
+    public String getMetroArea() {
+        return metroArea;
+    }
+
+    public void setMetroArea(String metroArea) {
+        this.metroArea = metroArea;
     }
 
     public String getPickupStoreId() {
@@ -114,14 +133,6 @@ public class ReservationByConfirmationNumber {
 
     public void setDropoffDate(LocalDate dropoffDate) {
         this.dropoffDate = dropoffDate;
-    }
-
-    public String getTruckType() {
-        return truckType;
-    }
-
-    public void setTruckType(String truckType) {
-        this.truckType = truckType;
     }
 
     public String getCustomerName() {
@@ -158,37 +169,14 @@ public class ReservationByConfirmationNumber {
         return "ReservationByConfirmationNumber{" +
                 "confirmationNumber='" + confirmationNumber + '\'' +
                 ", status='" + status + '\'' +
+                ", truckType='" + truckType + '\'' +
+                ", metroArea='" + metroArea + '\'' +
                 ", pickupStoreId='" + pickupStoreId + '\'' +
                 ", pickupDate=" + pickupDate +
                 ", dropoffStoreId='" + dropoffStoreId + '\'' +
                 ", dropoffDate=" + dropoffDate +
-                ", truckType='" + truckType + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", creditCardNumber='" + creditCardNumber + '\'' +
                 '}';
-    }
-
-    public String getMetroArea() {
-        return metroArea;
-    }
-
-    public void setMetroArea(String metroArea) {
-        this.metroArea = metroArea;
-    }
-
-    public LocalDate getReserveStartDate() {
-        return reserveStartDate;
-    }
-
-    public void setReserveStartDate(LocalDate reserveStartDate) {
-        this.reserveStartDate = reserveStartDate;
-    }
-
-    public LocalDate getReserveEndDate() {
-        return reserveEndDate;
-    }
-
-    public void setReserveEndDate(LocalDate reserveEndDate) {
-        this.reserveEndDate = reserveEndDate;
     }
 }

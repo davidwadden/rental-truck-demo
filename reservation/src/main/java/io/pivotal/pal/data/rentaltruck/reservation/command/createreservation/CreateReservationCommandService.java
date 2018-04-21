@@ -24,12 +24,14 @@ public class CreateReservationCommandService {
 
         ReservationRequestedEvent event = new ReservationRequestedEvent(
                 confirmationNumber,
+                commandDto.getTruckType(),
+                commandDto.getMetroArea(),
                 commandDto.getPickupStoreId(),
                 LocalDate.parse(commandDto.getPickupDate()),
                 commandDto.getDropoffStoreId(),
                 LocalDate.parse(commandDto.getDropoffDate()),
-                commandDto.getTruckType(),
-                commandDto.getCustomerName()
+                commandDto.getCustomerName(),
+                commandDto.getCreditCardNumber()
         );
 
         eventPublisher.publish(event);
