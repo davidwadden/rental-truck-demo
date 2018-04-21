@@ -3,11 +3,10 @@ apply plugin: 'org.springframework.boot'
 dependencies {
     implementation(project(':framework'))
 
-    implementation("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
     implementation('org.springframework.boot:spring-boot-starter-web')
-    implementation('org.springframework.boot:spring-boot-starter-data-cassandra')
-    implementation('org.springframework.cloud:spring-cloud-stream-binder-kafka')
+    implementation('com.fasterxml.jackson.module:jackson-module-parameter-names')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
+    implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.springframework.cloud:spring-cloud-stream-test-support')
 }
