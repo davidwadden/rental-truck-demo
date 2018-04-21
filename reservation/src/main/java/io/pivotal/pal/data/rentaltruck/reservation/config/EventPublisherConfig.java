@@ -1,7 +1,8 @@
-package io.pivotal.pal.data.rentaltruck.reservation.event;
+package io.pivotal.pal.data.rentaltruck.reservation.config;
 
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.framework.event.DefaultAsyncEventPublisher;
+import io.pivotal.pal.data.rentaltruck.reservation.event.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,7 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.reservation.query.storebymetroarea;
 
-import io.pivotal.pal.data.rentaltruck.reservation.repo.StoreByMetroAreaProjection;
-import io.pivotal.pal.data.rentaltruck.reservation.repo.StoreByMetroAreaRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.repository.StoreByMetroAreaProjection;
+import io.pivotal.pal.data.rentaltruck.reservation.repository.StoreByMetroAreaRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

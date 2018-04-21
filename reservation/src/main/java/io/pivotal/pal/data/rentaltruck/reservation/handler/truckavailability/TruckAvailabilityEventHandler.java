@@ -8,7 +8,7 @@ import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardVerifiedEvent
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckAvailableEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckNotAvailableEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.query.trucksonhand.TrucksOnHandByMetroAreaAndTruckTypeRepository;
-import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.repository.ReservationByConfirmationNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

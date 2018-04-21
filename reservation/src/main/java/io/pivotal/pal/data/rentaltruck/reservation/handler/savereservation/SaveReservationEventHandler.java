@@ -5,7 +5,7 @@ import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationInitializedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationRequestedEvent;
-import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.repository.ReservationByConfirmationNumberRepository;
 import org.springframework.stereotype.Component;
 
 /**

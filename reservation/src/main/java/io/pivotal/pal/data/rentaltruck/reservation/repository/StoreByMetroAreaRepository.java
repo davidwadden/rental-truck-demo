@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.repo;
+package io.pivotal.pal.data.rentaltruck.reservation.repository;
 
 import io.pivotal.pal.data.rentaltruck.reservation.entity.StoreByMetroArea;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.StoreByMetroAreaKey;

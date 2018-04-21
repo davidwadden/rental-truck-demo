@@ -6,7 +6,7 @@ import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmat
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardFailedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardVerifiedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationInitializedEvent;
-import io.pivotal.pal.data.rentaltruck.reservation.repo.ReservationByConfirmationNumberRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.repository.ReservationByConfirmationNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
