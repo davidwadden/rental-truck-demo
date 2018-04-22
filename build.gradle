@@ -1,6 +1,8 @@
 buildscript {
     ext {
         springBootVersion = '1.5.12.RELEASE'
+        springCloudVersion = 'Edgware.SR3'
+        awaitilityVersion = '3.1.0'
     }
     repositories {
         mavenCentral()
@@ -20,13 +22,5 @@ subprojects {
 
     repositories {
         mavenCentral()
-    }
-
-    dependencies {
-        implementation "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-
-        constraints {
-            implementation "org.awaitility:awaitility:${awaitilityVersion}"
-        }
     }
 }
