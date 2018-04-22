@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.command.createreservation;
+package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationRequestedEvent;
@@ -7,18 +7,18 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 @Service
-public class CreateReservationCommandService {
+public class ReserveTruckCommandService {
 
     private final AsyncEventPublisher<ReservationRequestedEvent> eventPublisher;
     private final ConfirmationNumberFactory factory;
 
-    public CreateReservationCommandService(AsyncEventPublisher<ReservationRequestedEvent> eventPublisher,
-                                           ConfirmationNumberFactory factory) {
+    public ReserveTruckCommandService(AsyncEventPublisher<ReservationRequestedEvent> eventPublisher,
+                                      ConfirmationNumberFactory factory) {
         this.eventPublisher = eventPublisher;
         this.factory = factory;
     }
 
-    public String handleCommand(CreateReservationCommandDto commandDto) {
+    public String reserveTruck(ReserveTruckCommandDto commandDto) {
 
         String confirmationNumber = factory.make();
 

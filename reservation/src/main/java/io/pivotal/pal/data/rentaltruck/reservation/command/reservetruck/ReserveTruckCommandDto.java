@@ -1,11 +1,11 @@
-package io.pivotal.pal.data.rentaltruck.reservation.command.createreservation;
+package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
-public class CreateReservationCommandDto {
+public class ReserveTruckCommandDto {
 
     private final String truckType;
     private final String metroArea;
@@ -17,14 +17,14 @@ public class CreateReservationCommandDto {
     private final String creditCardNumber;
 
     @JsonCreator
-    public CreateReservationCommandDto(@JsonProperty("truckType") String truckType,
-                                       @JsonProperty("metroArea") String metroArea,
-                                       @JsonProperty("pickupStoreId") String pickupStoreId,
-                                       @JsonProperty("pickupDate") String pickupDate,
-                                       @JsonProperty("dropoffStoreId") String dropoffStoreId,
-                                       @JsonProperty("dropoffDate") String dropoffDate,
-                                       @JsonProperty("customerName") String customerName,
-                                       @JsonProperty("creditCardNumber") String creditCardNumber) {
+    public ReserveTruckCommandDto(@JsonProperty("truckType") String truckType,
+                                  @JsonProperty("metroArea") String metroArea,
+                                  @JsonProperty("pickupStoreId") String pickupStoreId,
+                                  @JsonProperty("pickupDate") String pickupDate,
+                                  @JsonProperty("dropoffStoreId") String dropoffStoreId,
+                                  @JsonProperty("dropoffDate") String dropoffDate,
+                                  @JsonProperty("customerName") String customerName,
+                                  @JsonProperty("creditCardNumber") String creditCardNumber) {
         this.metroArea = metroArea;
         this.pickupStoreId = pickupStoreId;
         this.pickupDate = pickupDate;
@@ -71,7 +71,7 @@ public class CreateReservationCommandDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CreateReservationCommandDto that = (CreateReservationCommandDto) o;
+        ReserveTruckCommandDto that = (ReserveTruckCommandDto) o;
         return Objects.equals(truckType, that.truckType) &&
                 Objects.equals(metroArea, that.metroArea) &&
                 Objects.equals(pickupStoreId, that.pickupStoreId) &&
@@ -89,7 +89,7 @@ public class CreateReservationCommandDto {
 
     @Override
     public String toString() {
-        return "CreateReservationCommandDto{" +
+        return "ReserveTruckCommandDto{" +
                 "truckType='" + truckType + '\'' +
                 ", metroArea='" + metroArea + '\'' +
                 ", pickupStoreId='" + pickupStoreId + '\'' +

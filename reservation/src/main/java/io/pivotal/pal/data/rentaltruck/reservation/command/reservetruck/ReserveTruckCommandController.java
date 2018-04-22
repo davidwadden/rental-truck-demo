@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.command.createreservation;
+package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,19 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class CreateReservationCommandController {
+public class ReserveTruckCommandController {
 
-    private final CreateReservationCommandService service;
+    private final ReserveTruckCommandService service;
 
-    public CreateReservationCommandController(CreateReservationCommandService service) {
+    public ReserveTruckCommandController(ReserveTruckCommandService service) {
         this.service = service;
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity<Void> createReservation(@RequestBody CreateReservationCommandDto commandDto,
+    public ResponseEntity<Void> reserveTruck(@RequestBody ReserveTruckCommandDto commandDto,
                                                   UriComponentsBuilder uriComponentsBuilder) {
 
-        String confirmationNumber = service.handleCommand(commandDto);
+        String confirmationNumber = service.reserveTruck(commandDto);
 
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("confirmationNumber", confirmationNumber);

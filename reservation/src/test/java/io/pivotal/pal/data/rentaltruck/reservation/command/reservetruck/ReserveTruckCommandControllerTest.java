@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.command.createreservation;
+package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -18,27 +18,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateReservationCommandControllerTest {
+public class ReserveTruckCommandControllerTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
-    private CreateReservationCommandService mockService;
+    private ReserveTruckCommandService mockService;
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
-        CreateReservationCommandController controller = new CreateReservationCommandController(mockService);
+        ReserveTruckCommandController controller = new ReserveTruckCommandController(mockService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
-    public void createReservation() throws Exception {
+    public void reserveTruck() throws Exception {
         doReturn("some-confirmation-number")
                 .when(mockService)
-                .handleCommand(any());
+                .reserveTruck(any());
 
-        CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
+        ReserveTruckCommandDto commandDto = new ReserveTruckCommandDto(
                 "some-truck-type",
                 "some-metro-area",
                 "some-pickup-store-id",
@@ -59,6 +59,6 @@ public class CreateReservationCommandControllerTest {
                 .andExpect(redirectedUrlPattern("**/reservations/some-confirmation-number"))
                 .andReturn();
 
-        verify(mockService).handleCommand(commandDto);
+        verify(mockService).reserveTruck(commandDto);
     }
 }

@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.command.createreservation;
+package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import org.springframework.stereotype.Component;
 

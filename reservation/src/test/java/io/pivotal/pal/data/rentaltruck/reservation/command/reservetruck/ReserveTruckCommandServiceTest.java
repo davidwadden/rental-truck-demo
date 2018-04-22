@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.command.createreservation;
+package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationRequestedEvent;
@@ -16,18 +16,18 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.inOrder;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CreateReservationCommandServiceTest {
+public class ReserveTruckCommandServiceTest {
 
     @Mock
     private AsyncEventPublisher<ReservationRequestedEvent> mockPublisher;
     @Mock
     private ConfirmationNumberFactory mockFactory;
 
-    private CreateReservationCommandService service;
+    private ReserveTruckCommandService service;
 
     @Before
     public void setUp() {
-        service = new CreateReservationCommandService(mockPublisher, mockFactory);
+        service = new ReserveTruckCommandService(mockPublisher, mockFactory);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class CreateReservationCommandServiceTest {
                 .when(mockFactory)
                 .make();
 
-        CreateReservationCommandDto commandDto = new CreateReservationCommandDto(
+        ReserveTruckCommandDto commandDto = new ReserveTruckCommandDto(
                 "some-truck-type",
                 "some-metro-area",
                 "some-pickup-store-id",
@@ -47,7 +47,7 @@ public class CreateReservationCommandServiceTest {
                 "some-customer-name",
                 "some-credit-card-number");
 
-        String confirmationNumber = service.handleCommand(commandDto);
+        String confirmationNumber = service.reserveTruck(commandDto);
 
         assertThat(confirmationNumber).isEqualTo(expectedConfirmationNumber);
 
