@@ -10,12 +10,9 @@ buildscript {
     }
 }
 
-
 subprojects {
-
     apply plugin: 'java'
     apply plugin: 'eclipse'
-    apply plugin: 'io.spring.dependency-management'
 
     group = 'io.pivotal.pal.data'
     version = '0.0.1-SNAPSHOT'
@@ -25,14 +22,11 @@ subprojects {
         mavenCentral()
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
+    dependencies {
+        compile "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 
-        dependencies {
-            dependency "org.awaitility:awaitility:${awaitilityVersion}"
+        constraints {
+            compile "org.awaitility:awaitility:${awaitilityVersion}"
         }
     }
-
 }

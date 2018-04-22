@@ -1,2 +1,4 @@
-include 'framework'
-include 'reservation'
+include 'framework',
+        'reservation'
+
+enableFeaturePreview('IMPROVED_POM_SUPPORT')
