@@ -1,5 +1,6 @@
-package io.pivotal.pal.data.rentaltruck.framework.event;
+package io.pivotal.pal.data.rentaltruck.framework.event.kafka;
 
+import io.pivotal.pal.data.rentaltruck.framework.event.DefaultAsyncEventPublisher;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;

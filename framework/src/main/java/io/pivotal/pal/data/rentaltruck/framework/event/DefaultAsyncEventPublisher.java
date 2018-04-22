@@ -10,8 +10,10 @@ public class DefaultAsyncEventPublisher<T> extends AsyncEventChannel implements 
     }
 
     public void publish(T data) {
-        Set<BlockingQueue<?>> queues = getQueues();
+        Set<BlockingQueue<?>> queues = super.getQueues();
+
         for (BlockingQueue<?> queue : queues) {
+            //noinspection unchecked
             ((BlockingQueue<T>) queue).offer(data);
         }
     }

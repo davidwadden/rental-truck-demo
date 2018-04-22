@@ -1,13 +1,14 @@
-package io.pivotal.pal.data.rentaltruck.framework.event;
+package io.pivotal.pal.data.rentaltruck.framework.event.messaging;
 
+import io.pivotal.pal.data.rentaltruck.framework.event.DefaultSyncEventPublisher;
 import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 
-public class SpringIntegrationSyncEventPublisher<C, R> extends DefaultSyncEventPublisher<C, R> implements MessageHandler {
+public class SpringMessagingSyncEventPublisher<C, R> extends DefaultSyncEventPublisher<C, R> implements MessageHandler {
 
     private MessageChannel output;
 
-    public SpringIntegrationSyncEventPublisher(String eventName, SubscribableChannel input, MessageChannel output) {
+    public SpringMessagingSyncEventPublisher(String eventName, SubscribableChannel input, MessageChannel output) {
         super(eventName);
         this.output = output;
         input.subscribe(this);
@@ -15,6 +16,7 @@ public class SpringIntegrationSyncEventPublisher<C, R> extends DefaultSyncEventP
 
     @Override
     public void handleMessage(Message<?> message) throws MessagingException {
+        //noinspection unchecked
         C data = (C) message.getPayload();
         R response = publish(data);
 

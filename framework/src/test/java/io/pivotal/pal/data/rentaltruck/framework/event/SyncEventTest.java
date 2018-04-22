@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SyncEventTest {
 
-    private static final String eventName = "test";
+    private static final String EVENT_NAME = "test";
 
     private DefaultSyncEventPublisher<String, String> publisher;
     private Handler handler;
@@ -15,9 +15,9 @@ public class SyncEventTest {
 
     @Before
     public void setUp() {
-        publisher = new DefaultSyncEventPublisher<>(eventName);
+        publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         handler = new Handler();
-        subscriber = new SyncEventSubscriberAdapter<>(eventName, handler);
+        subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler);
 
         handler.setData(null);
     }

@@ -7,6 +7,8 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
     public SyncEventSubscriberAdapter(String eventName, SyncEventHandler<C, R> subscriber) {
         super(eventName);
         this.handler = subscriber;
+
+        //noinspection unchecked
         registerSubscriber((SyncEventSubscriberAdapter<Object, Object>) this);
     }
 

@@ -13,6 +13,7 @@ public class DefaultSyncEventPublisher<C, R> extends SyncEventChannel implements
         R retValue = null;
 
         for (SyncEventSubscriberAdapter<Object, Object> subscriber : set) {
+            //noinspection unchecked
             retValue = (R) subscriber.onEvent(data);
         }
 

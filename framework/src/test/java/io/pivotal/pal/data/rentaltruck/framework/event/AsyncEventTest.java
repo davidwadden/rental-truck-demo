@@ -9,7 +9,7 @@ import static org.awaitility.Duration.ONE_SECOND;
 
 public class AsyncEventTest {
 
-    private static final String eventName = "test";
+    private static final String EVENT_NAME = "test";
 
     private String data;
 
@@ -18,8 +18,8 @@ public class AsyncEventTest {
 
     @Before
     public void setUp() {
-        publisher = new DefaultAsyncEventPublisher<>(eventName);
-        subscriber = new AsyncEventSubscriberAdapter<>(eventName, new Handler());
+        publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
+        subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler());
 
         data = null;
     }

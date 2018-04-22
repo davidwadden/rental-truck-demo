@@ -1,15 +1,16 @@
-package io.pivotal.pal.data.rentaltruck.framework.event;
+package io.pivotal.pal.data.rentaltruck.framework.event.messaging;
 
+import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 
-public class SpringIntegrationAsyncEventHandler<T> implements AsyncEventHandler<T> {
+public class SpringMessagingAsyncEventHandler<T> implements AsyncEventHandler<T> {
 
     private String eventName;
     private MessageChannel channel;
 
-    public SpringIntegrationAsyncEventHandler(String eventName, MessageChannel channel) {
+    public SpringMessagingAsyncEventHandler(String eventName, MessageChannel channel) {
         this.eventName = eventName;
         this.channel = channel;
     }
