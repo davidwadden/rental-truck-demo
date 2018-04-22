@@ -52,7 +52,7 @@ public class CreditCardVerifierEventHandler implements AsyncEventHandler<Reserva
 
         // verify credit card rest template to 3rd party API
         if (reservation.getStatus().equals("PROCESSING")) {
-            logger.warn("already processing reservation {}", reservation.getConfirmationNumber());
+            logger.warn("already processing reservation {}", confirmationNumber);
             return;
         }
 
@@ -60,12 +60,15 @@ public class CreditCardVerifierEventHandler implements AsyncEventHandler<Reserva
         repository.save(reservation);
 
         // TODO: discuss how this relies on data being passed through DB rather than events
-        if (creditCardService.validateCreditCard(reservation.getCreditCardNumber(), 0.0 /*TODO: real value*/)) {
-            // if success, emit credit card verified message downstream
-            creditCardVerifiedEventPublisher.publish(new CreditCardVerifiedEvent());
-        } else {
+        if (!creditCardService.validateCreditCard(reservation.getCreditCardNumber(), 0.0 /*TODO: real value*/)) {
             // if failed, emit credit card failed event
-            creditCardFailedEventPublisher.publish(new CreditCardFailedEvent());
+            CreditCardFailedEvent failedEvent = new CreditCardFailedEvent(confirmationNumber, "credit card authorization declined");
+            creditCardFailedEventPublisher.publish(failedEvent);
+            return;
         }
+
+        // if success, emit credit card verified message downstream
+        CreditCardVerifiedEvent verifiedEvent = new CreditCardVerifiedEvent(confirmationNumber);
+        creditCardVerifiedEventPublisher.publish(verifiedEvent);
     }
 }

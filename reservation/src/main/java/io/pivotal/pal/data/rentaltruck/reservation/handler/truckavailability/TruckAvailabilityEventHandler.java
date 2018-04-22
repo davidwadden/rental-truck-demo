@@ -3,11 +3,11 @@ package io.pivotal.pal.data.rentaltruck.reservation.handler.truckavailability;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
-import io.pivotal.pal.data.rentaltruck.reservation.entity.TrucksOnHandByMetroAreaAndTruckType;
+import io.pivotal.pal.data.rentaltruck.reservation.entity.TrucksOnHandByStoreAndTruckType;
 import io.pivotal.pal.data.rentaltruck.reservation.event.CreditCardVerifiedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckAvailableEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.event.TruckNotAvailableEvent;
-import io.pivotal.pal.data.rentaltruck.reservation.query.trucksonhand.TrucksOnHandByMetroAreaAndTruckTypeRepository;
+import io.pivotal.pal.data.rentaltruck.reservation.query.trucksonhand.TrucksOnHandByStoreAndTruckTypeRepository;
 import io.pivotal.pal.data.rentaltruck.reservation.repository.ReservationByConfirmationNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.Collection;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This handler subscribes to {@link CreditCardVerifiedEvent} and checks against Cassandra
@@ -29,12 +28,12 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
     private final AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventPublisher;
     private final AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventPublisher;
     private final ReservationByConfirmationNumberRepository reservationRepository;
-    private final TrucksOnHandByMetroAreaAndTruckTypeRepository trucksOnHandRepository;
+    private final TrucksOnHandByStoreAndTruckTypeRepository trucksOnHandRepository;
 
     public TruckAvailabilityEventHandler(AsyncEventPublisher<TruckAvailableEvent> truckAvailableEventPublisher,
                                          AsyncEventPublisher<TruckNotAvailableEvent> truckNotAvailableEventPublisher,
                                          ReservationByConfirmationNumberRepository reservationRepository,
-                                         TrucksOnHandByMetroAreaAndTruckTypeRepository trucksOnHandRepository) {
+                                         TrucksOnHandByStoreAndTruckTypeRepository trucksOnHandRepository) {
         this.truckAvailableEventPublisher = truckAvailableEventPublisher;
         this.truckNotAvailableEventPublisher = truckNotAvailableEventPublisher;
         this.reservationRepository = reservationRepository;
@@ -56,30 +55,26 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
 
         // query reservations for a given store / truckAvailableEventPublisher type over the desired date span to
         //   see whether there is at least one truckAvailableEventPublisher available to be reserved
-        Collection<TrucksOnHandByMetroAreaAndTruckType> trucksOnHand =
-                trucksOnHandRepository.findAllByMetroAreaAndTruckTypeAndDateRange(
-                        reservation.getMetroArea(),
+        Collection<TrucksOnHandByStoreAndTruckType> trucksOnHand =
+                trucksOnHandRepository.findAllByStoreAndTruckTypeAndDateRange(
+                        reservation.getPickupStoreId(),
                         reservation.getTruckType(),
                         reservation.getPickupDate(),
                         reservation.getDropoffDate()
                 );
 
         // check whether a given store has availability for the entire date range
-        // TODO: need to do this for each store and see if any store can do all days
-        final AtomicBoolean hasAvailable = new AtomicBoolean(true);
-        trucksOnHand.forEach(c -> {
-            if (c.getCountOnHand() == 0) {
-                hasAvailable.set(false);
-            }
-        });
+        // TODO: Handle a missing a record in trucksOnHand table, zero records currently passes
+        boolean trucksAvailableOnAllDays = trucksOnHand.stream()
+                .allMatch(countByDay -> countByDay.getCountOnHand() > 0);
 
-        // if truckAvailableEventPublisher available, emit message to reservation validated topic
         // if zero trucks available, emit message to reservation validation failed topic (doesn't exist yet)
-        if (hasAvailable.get()) {
-            truckAvailableEventPublisher.publish(new TruckAvailableEvent()); // TODO
-        } else {
+        if (!trucksAvailableOnAllDays) {
             truckNotAvailableEventPublisher.publish(new TruckNotAvailableEvent()); // TODO
         }
+
+        // if truckAvailableEventPublisher available, emit message to reservation validated topic
+        truckAvailableEventPublisher.publish(new TruckAvailableEvent()); // TODO
 
         reservation.setStatus("VALIDATING");
         reservationRepository.save(reservation);
