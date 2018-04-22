@@ -4,6 +4,7 @@ dependencies {
     implementation(project(':framework'))
 
     implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-data-cassandra')
     implementation('com.fasterxml.jackson.module:jackson-module-parameter-names')
     implementation('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
     implementation('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
