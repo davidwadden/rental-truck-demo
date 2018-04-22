@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation;
+package io.pivotal.pal.data.rentaltruck;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class RentalTruckReservationApplicationTest {
+public class RentalTruckApplicationTest {
 
     @Test
     public void contextLoads() {

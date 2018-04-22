@@ -1,7 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.reservation.command.reservetruck;
 
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
-import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationRequestedEvent;
+import io.pivotal.pal.data.rentaltruck.event.ReservationRequestedEvent;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

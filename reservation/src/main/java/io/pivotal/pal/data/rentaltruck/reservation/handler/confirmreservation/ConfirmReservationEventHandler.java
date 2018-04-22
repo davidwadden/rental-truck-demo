@@ -2,7 +2,7 @@ package io.pivotal.pal.data.rentaltruck.reservation.handler.confirmreservation;
 
 import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
-import io.pivotal.pal.data.rentaltruck.reservation.event.ReservationValidatedEvent;
+import io.pivotal.pal.data.rentaltruck.event.ReservationValidatedEvent;
 import io.pivotal.pal.data.rentaltruck.reservation.repository.ReservationByConfirmationNumberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

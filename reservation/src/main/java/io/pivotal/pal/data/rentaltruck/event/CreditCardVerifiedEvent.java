@@ -1,12 +1,12 @@
-package io.pivotal.pal.data.rentaltruck.reservation.event;
+package io.pivotal.pal.data.rentaltruck.event;
 
 import java.util.Objects;
 
-public class ReservationValidatedEvent {
+public class CreditCardVerifiedEvent {
 
     private final String confirmationNumber;
 
-    public ReservationValidatedEvent(String confirmationNumber) {
+    public CreditCardVerifiedEvent(String confirmationNumber) {
         this.confirmationNumber = confirmationNumber;
     }
 
@@ -18,7 +18,7 @@ public class ReservationValidatedEvent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReservationValidatedEvent that = (ReservationValidatedEvent) o;
+        CreditCardVerifiedEvent that = (CreditCardVerifiedEvent) o;
         return Objects.equals(confirmationNumber, that.confirmationNumber);
     }
 
@@ -29,7 +29,7 @@ public class ReservationValidatedEvent {
 
     @Override
     public String toString() {
-        return "ReservationValidatedEvent{" +
+        return "CreditCardVerifiedEvent{" +
                 "confirmationNumber='" + confirmationNumber + '\'' +
                 '}';
     }

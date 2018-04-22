@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.reservation.event;
+package io.pivotal.pal.data.rentaltruck.event;
 
 import java.util.Objects;
 
