@@ -23,10 +23,10 @@ subprojects {
     }
 
     dependencies {
-        compile "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        implementation "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 
         constraints {
-            compile "org.awaitility:awaitility:${awaitilityVersion}"
+            implementation "org.awaitility:awaitility:${awaitilityVersion}"
         }
     }
 }

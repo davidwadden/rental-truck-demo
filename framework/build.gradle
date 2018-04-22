@@ -1,15 +1,16 @@
+apply plugin: 'java-library'
 apply plugin: 'org.springframework.boot'
 
 bootRepackage.enabled = false
 
 dependencies {
-    compile('org.springframework.data:spring-data-cassandra')
-    compile('org.springframework.kafka:spring-kafka')
-    compile('org.slf4j:slf4j-api')
+    implementation('org.springframework.data:spring-data-cassandra')
+    implementation('org.springframework.kafka:spring-kafka')
+    implementation('org.slf4j:slf4j-api')
 
-    runtime('ch.qos.logback:logback-classic')
+    runtimeOnly('ch.qos.logback:logback-classic')
 
-    testCompile('junit:junit')
-    testCompile('org.assertj:assertj-core')
-    testCompile('org.awaitility:awaitility')
+    testImplementation('junit:junit')
+    testImplementation('org.assertj:assertj-core')
+    testImplementation('org.awaitility:awaitility')
 }
