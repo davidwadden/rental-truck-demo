@@ -1,4 +1,7 @@
-package io.pivotal.pal.data.rentaltruck.framework.event;
+package io.pivotal.pal.data.framework.event;
+
+import io.pivotal.pal.data.framework.event.kafka.KafkaAsyncEventPublisher;
+import io.pivotal.pal.data.framework.event.messaging.SpringMessagingAsyncEventPublisher;
 
 /**
  * This interface is the common API for asynchronous event publishers.
@@ -6,8 +9,8 @@ package io.pivotal.pal.data.rentaltruck.framework.event;
  * @param <T> type of event
  *
  * @see DefaultAsyncEventPublisher
- * @see io.pivotal.pal.data.rentaltruck.framework.event.kafka.KafkaAsyncEventPublisher
- * @see io.pivotal.pal.data.rentaltruck.framework.event.messaging.SpringMessagingAsyncEventPublisher
+ * @see KafkaAsyncEventPublisher
+ * @see SpringMessagingAsyncEventPublisher
  */
 public interface AsyncEventPublisher<T> {
 

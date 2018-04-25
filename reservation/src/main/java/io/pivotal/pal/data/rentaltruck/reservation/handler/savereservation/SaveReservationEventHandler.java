@@ -1,7 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.reservation.handler.savereservation;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
+import io.pivotal.pal.data.framework.event.AsyncEventHandler;
+import io.pivotal.pal.data.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
 import io.pivotal.pal.data.rentaltruck.event.ReservationInitializedEvent;
 import io.pivotal.pal.data.rentaltruck.event.ReservationRequestedEvent;

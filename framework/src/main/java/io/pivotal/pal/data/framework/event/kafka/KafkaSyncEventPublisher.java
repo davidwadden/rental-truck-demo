@@ -1,6 +1,6 @@
-package io.pivotal.pal.data.rentaltruck.framework.event.kafka;
+package io.pivotal.pal.data.framework.event.kafka;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.DefaultAsyncEventPublisher;
+import io.pivotal.pal.data.framework.event.DefaultSyncEventPublisher;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -10,12 +10,12 @@ import org.springframework.kafka.listener.config.ContainerProperties;
 
 import java.util.Map;
 
-public class KafkaAsyncEventPublisher<T> extends DefaultAsyncEventPublisher<T> implements MessageListener<Object, T>, SmartLifecycle {
+public class KafkaSyncEventPublisher<C, R> extends DefaultSyncEventPublisher<C, R> implements MessageListener<Object, C>, SmartLifecycle {
 
-    private KafkaMessageListenerContainer<Object, T> container;
+    private KafkaMessageListenerContainer<Object, C> container;
     private Map<String, Object> consumerProps;
 
-    public KafkaAsyncEventPublisher(String eventName, Map<String, Object> consumerProps) {
+    public KafkaSyncEventPublisher(String eventName, Map<String, Object> consumerProps) {
         super(eventName);
         this.consumerProps = consumerProps;
 
@@ -25,9 +25,8 @@ public class KafkaAsyncEventPublisher<T> extends DefaultAsyncEventPublisher<T> i
     }
 
     @Override
-    public void onMessage(ConsumerRecord<Object, T> record) {
-        T data = record.value();
-        publish(data);
+    public void onMessage(ConsumerRecord<Object, C> data) {
+        publish(data.value());
     }
 
     @Override
@@ -60,8 +59,8 @@ public class KafkaAsyncEventPublisher<T> extends DefaultAsyncEventPublisher<T> i
         return 0;
     }
 
-    private KafkaMessageListenerContainer<Object, T> createContainer(ContainerProperties containerProps) {
-        DefaultKafkaConsumerFactory<Object, T> cf = new DefaultKafkaConsumerFactory<>(consumerProps);
+    private KafkaMessageListenerContainer<Object, C> createContainer(ContainerProperties containerProps) {
+        DefaultKafkaConsumerFactory<Object, C> cf = new DefaultKafkaConsumerFactory<>(consumerProps);
         return new KafkaMessageListenerContainer<>(cf, containerProps);
     }
 

@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.framework.event;
+package io.pivotal.pal.data.framework.event;
 
 /**
  * This interface is the common API for synchronous event publishers.

@@ -1,7 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.config;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventSubscriberAdapter;
+import io.pivotal.pal.data.framework.event.AsyncEventHandler;
+import io.pivotal.pal.data.framework.event.AsyncEventSubscriberAdapter;
 import io.pivotal.pal.data.rentaltruck.event.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

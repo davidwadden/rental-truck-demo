@@ -1,6 +1,6 @@
-package io.pivotal.pal.data.rentaltruck.framework.event.kafka;
+package io.pivotal.pal.data.framework.event.kafka;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.SyncEventHandler;
+import io.pivotal.pal.data.framework.event.SyncEventHandler;
 import org.springframework.kafka.core.KafkaTemplate;
 
 public class KafkaSyncEventHandler<C, R> implements SyncEventHandler<C, R> {

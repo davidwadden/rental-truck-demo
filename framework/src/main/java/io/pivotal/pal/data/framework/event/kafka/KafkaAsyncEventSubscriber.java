@@ -1,6 +1,6 @@
-package io.pivotal.pal.data.rentaltruck.framework.event.kafka;
+package io.pivotal.pal.data.framework.event.kafka;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
+import io.pivotal.pal.data.framework.event.AsyncEventHandler;
 import org.springframework.kafka.core.KafkaTemplate;
 
 public class KafkaAsyncEventSubscriber<T> implements AsyncEventHandler<T> {

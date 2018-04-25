@@ -1,4 +1,4 @@
-package io.pivotal.pal.data.rentaltruck.framework.event;
+package io.pivotal.pal.data.framework.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

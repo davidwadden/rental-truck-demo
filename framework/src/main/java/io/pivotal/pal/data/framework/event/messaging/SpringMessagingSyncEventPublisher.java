@@ -1,6 +1,6 @@
-package io.pivotal.pal.data.rentaltruck.framework.event.messaging;
+package io.pivotal.pal.data.framework.event.messaging;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.DefaultSyncEventPublisher;
+import io.pivotal.pal.data.framework.event.DefaultSyncEventPublisher;
 import org.springframework.messaging.*;
 import org.springframework.messaging.support.MessageBuilder;
 

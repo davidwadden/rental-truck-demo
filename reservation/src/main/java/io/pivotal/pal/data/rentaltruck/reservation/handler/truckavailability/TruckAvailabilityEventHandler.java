@@ -1,7 +1,7 @@
 package io.pivotal.pal.data.rentaltruck.reservation.handler.truckavailability;
 
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventHandler;
-import io.pivotal.pal.data.rentaltruck.framework.event.AsyncEventPublisher;
+import io.pivotal.pal.data.framework.event.AsyncEventHandler;
+import io.pivotal.pal.data.framework.event.AsyncEventPublisher;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.ReservationByConfirmationNumber;
 import io.pivotal.pal.data.rentaltruck.reservation.entity.TrucksOnHandByStoreAndTruckType;
 import io.pivotal.pal.data.rentaltruck.event.CreditCardVerifiedEvent;
