@@ -2,6 +2,9 @@ package io.pivotal.pal.data.framework.event;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SyncEventTest {
@@ -12,7 +15,7 @@ public class SyncEventTest {
     public void success_withoutRetry() {
         DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         Handler handler = new Handler();
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 0, 0, 0);
+        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler);
 
         handler.setData(null);
 
@@ -27,7 +30,7 @@ public class SyncEventTest {
     public void success_withRetry() {
         DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2);
+        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, null);
 
         handler.setData(null);
 
@@ -39,11 +42,41 @@ public class SyncEventTest {
     }
 
     @Test
+    public void success_withRetryWithRecoverableExceptions() {
+        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
+        ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
+        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, new HashSet<>(Arrays.asList(IllegalArgumentException.class)));
+
+        handler.setData(null);
+
+        String someData = "some-data";
+        String result = publisher.publish(someData);
+
+        assertThat(handler.getData()).isEqualTo(someData);
+        assertThat(result).isEqualTo(someData);
+    }
+
+    @Test
+    public void error_withRetryWithNonRecoverableExceptions() {
+        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
+        ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
+        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, new HashSet<>(Arrays.asList(IllegalStateException.class)));
+
+        handler.setData(null);
+
+        String someData = "some-data";
+        String result = publisher.publish(someData);
+
+        assertThat(handler.getData()).isNull();
+        assertThat(result).isNull();
+    }
+
+    @Test
     public void error_withHandlerNoRetry() {
         DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
         Handler errorHandler = new Handler();
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, errorHandler, 0, 0, 0);
+        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, errorHandler);
 
         String someData = "some-data";
         String result = publisher.publish(someData);
@@ -56,7 +89,7 @@ public class SyncEventTest {
     public void error_withoutHandlerNoRetry() {
         DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 0, 0, 0);
+        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler);
 
         String someData = "some-data";
         String result = publisher.publish(someData);

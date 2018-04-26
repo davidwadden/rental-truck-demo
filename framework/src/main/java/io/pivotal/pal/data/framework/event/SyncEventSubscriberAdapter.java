@@ -1,5 +1,7 @@
 package io.pivotal.pal.data.framework.event;
 
+import java.util.Set;
+
 public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
 
     private SyncEventHandler<C, R> handler;
@@ -7,15 +9,26 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
     private int maxRetryCount;
     private long initialRetryWaitTime;
     private int retryWaitTimeMultiplier;
+    private Set<Class<?>> recoverableExceptions;
+
+    public SyncEventSubscriberAdapter(String eventName, SyncEventHandler<C, R> handler) {
+        this(eventName, handler, null, 0,0,0,null);
+    }
+
+    public SyncEventSubscriberAdapter(String eventName, SyncEventHandler<C, R> handler, SyncEventHandler<C, R> errorHandler) {
+        this(eventName, handler, errorHandler, 0,0,0,null);
+    }
 
     public SyncEventSubscriberAdapter(String eventName, SyncEventHandler<C, R> handler, SyncEventHandler<C, R> errorHandler,
-                                      int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier) {
+                                      int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier,
+                                      Set<Class<?>> recoverableExceptions) {
         super(eventName);
         this.handler = handler;
         this.errorHandler = errorHandler;
         this.maxRetryCount = maxRetryCount;
         this.initialRetryWaitTime = initialRetryWaitTime;
         this.retryWaitTimeMultiplier = retryWaitTimeMultiplier;
+        this.recoverableExceptions = recoverableExceptions;
 
         //noinspection unchecked
         registerSubscriber((SyncEventSubscriberAdapter<Object, Object>) this);
@@ -25,11 +38,15 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
         try {
             long waitTime = initialRetryWaitTime;
 
-            for (int i = 0; i <= maxRetryCount; ++i) {
+            for (int retryCount = 0; retryCount <= maxRetryCount; ++retryCount) {
                 try {
                     return handler.onEvent(data);
                 } catch (Exception t) {
-                    if (i < maxRetryCount) {
+                    if (recoverableExceptions != null && !recoverableExceptions.isEmpty() && !recoverableExceptions.contains(t.getClass())) {
+                        throw t;
+                    }
+
+                    if (retryCount < maxRetryCount) {
                         synchronized (this) {
                             this.wait(waitTime);
                         }
