@@ -3,6 +3,9 @@ package io.pivotal.pal.data.framework.event;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Duration.ONE_SECOND;
@@ -24,7 +27,7 @@ public class AsyncEventTest {
     @Test
     public void success() {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler(), null, 0, 0, 0);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler());
         subscriber.start();
 
         String someData = "some-data";
@@ -40,7 +43,7 @@ public class AsyncEventTest {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(1),
-                new ErrorHandler(), 0, 0, 0);
+                new ErrorHandler());
         subscriber.start();
 
         String someData = "some-data";
@@ -59,7 +62,7 @@ public class AsyncEventTest {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(1),
-                null, 1, 100, 2);
+                null, 1, 100, 2, null);
         subscriber.start();
 
         String someData = "some-data";
@@ -74,11 +77,49 @@ public class AsyncEventTest {
     }
 
     @Test
+    public void success_withoutHandlerWithRetryWithRecoverableExceptions() {
+        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1), null, 1, 100,
+                2, new HashSet<>(Arrays.asList(IllegalArgumentException.class)));
+        subscriber.start();
+
+        String someData = "some-data";
+        publisher.publish(someData);
+
+        await()
+                .atMost(TWO_SECONDS)
+                .untilAsserted(() -> {
+                    assertThat(errorData).isNull();
+                    assertThat(data).isEqualTo(someData);
+                });
+    }
+
+    @Test
+    public void error_withoutHandlerWithRetryWithNonRecoverableExceptions() {
+        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1), null, 1, 100,
+                2, new HashSet<>(Arrays.asList(IllegalStateException.class)));
+        subscriber.start();
+
+        String someData = "some-data";
+        publisher.publish(someData);
+
+        await()
+                .atMost(TWO_SECONDS)
+                .untilAsserted(() -> {
+                    assertThat(errorData).isNull();
+                    assertThat(data).isNull();
+                });
+    }
+
+    @Test
     public void success_withoutHandlerWithRetryExceeded() {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(2),
-                null, 1, 100, 2);
+                null, 1, 100, 2, null);
         subscriber.start();
 
         String someData = "some-data";
@@ -96,7 +137,7 @@ public class AsyncEventTest {
     public void error_withoutHandlerNoRetry() {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1), null, 0, 0, 0);
+                new ExceptionThrowingHandler(1), null, 0, 0, 0, null);
         subscriber.start();
 
         String someData = "some-data";

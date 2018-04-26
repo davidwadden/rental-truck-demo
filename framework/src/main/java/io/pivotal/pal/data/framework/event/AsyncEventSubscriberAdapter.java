@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.Assert;
 
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -18,11 +19,21 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel implements
     private int maxRetryCount;
     private long initialRetryWaitTime;
     private int retryWaitTimeMultiplier;
+    private Set<Class<?>> recoverableExceptions;
 
     private boolean running = false;
 
+    public AsyncEventSubscriberAdapter(String eventName, AsyncEventHandler<T> handler) {
+        this(eventName, handler, null, 0, 0, 0, null);
+    }
+
+    public AsyncEventSubscriberAdapter(String eventName, AsyncEventHandler<T> handler, AsyncEventHandler<T> errorHandler) {
+        this(eventName, handler, errorHandler, 0, 0, 0, null);
+    }
+
     public AsyncEventSubscriberAdapter(String eventName, AsyncEventHandler<T> handler, AsyncEventHandler<T> errorHandler,
-                                       int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier) {
+                                       int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier,
+                                       Set<Class<?>> recoverableExceptions) {
         super(eventName);
 
         Assert.isTrue(maxRetryCount >= 0, "Invalid maxRetryCount: " + maxRetryCount);
@@ -32,6 +43,7 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel implements
         this.maxRetryCount = maxRetryCount;
         this.initialRetryWaitTime = initialRetryWaitTime;
         this.retryWaitTimeMultiplier = retryWaitTimeMultiplier;
+        this.recoverableExceptions = recoverableExceptions;
 
         super.addQueue(queue);
     }
@@ -67,6 +79,57 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel implements
         return 0;
     }
 
+    private void processEntry() {
+        T data = null;
+
+        try {
+            data = queue.take();
+            long waitTime = initialRetryWaitTime;
+
+            for (int retryCount = 0; retryCount <= maxRetryCount; ++retryCount) {
+                logger.debug("calling event handler={}: data={}", handler, data);
+
+                try {
+                    handler.onEvent(data);
+                    break;
+                } catch (Exception e) {
+                    waitTime = handleException(e, waitTime, retryCount);
+                }
+            }
+        } catch (Exception x) {
+            logger.error("exception thrown in event processor thread: x={}, data={}", x.toString(), data, x);
+
+            if (errorHandler != null && data != null) {
+                errorHandler.onEvent(data);
+            }
+        }
+    }
+
+    private long handleException(Exception e, long waitTime, int retryCount) throws Exception {
+        if (recoverableExceptions != null &&
+                !recoverableExceptions.isEmpty() &&
+                !recoverableExceptions.contains(e.getClass())) {
+            // if recoverable exceptions specified and this exception is not recoverable, rethrow
+            throw e;
+        }
+
+        if (retryCount < maxRetryCount) {
+            try {
+                synchronized (this) {
+                    this.wait(waitTime);
+                }
+
+                waitTime *= retryWaitTimeMultiplier;
+            } catch (InterruptedException t) {
+                // no-op
+            }
+
+            return waitTime;
+        } else {
+            throw e;
+        }
+    }
+
     private class Processor extends Thread {
 
         private Processor() {
@@ -75,41 +138,7 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel implements
         @Override
         public void run() {
             while (running) {
-                T data = null;
-
-                try {
-                    data = queue.take();
-                    long waitTime = initialRetryWaitTime;
-
-                    for (int i = 0; i <= maxRetryCount; ++i) {
-                        logger.debug("calling event handler={}: data={}", handler, data);
-
-                        try {
-                            handler.onEvent(data);
-                            break;
-                        } catch (Exception e) {
-                            if (i < maxRetryCount) {
-                                try {
-                                    synchronized (this) {
-                                        this.wait(waitTime);
-                                    }
-
-                                    waitTime *= retryWaitTimeMultiplier;
-                                } catch (InterruptedException t) {
-                                    // no-op
-                                }
-                            } else {
-                                throw e;
-                            }
-                        }
-                    }
-                } catch (Exception x) {
-                    logger.error("exception thrown in event processor thread: x={}, data={}", x.toString(), data, x);
-
-                    if (errorHandler != null && data != null) {
-                        errorHandler.onEvent(data);
-                    }
-                }
+                processEntry();
             }
         }
     }
