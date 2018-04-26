@@ -25,6 +25,7 @@ public class AsyncEventTest {
     public void success() {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler(), null, 0, 0, 0);
+        subscriber.start();
 
         String someData = "some-data";
         publisher.publish(someData);
@@ -40,6 +41,7 @@ public class AsyncEventTest {
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(1),
                 new ErrorHandler(), 0, 0, 0);
+        subscriber.start();
 
         String someData = "some-data";
         publisher.publish(someData);
@@ -58,6 +60,7 @@ public class AsyncEventTest {
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(1),
                 null, 1, 100, 2);
+        subscriber.start();
 
         String someData = "some-data";
         publisher.publish(someData);
@@ -76,6 +79,7 @@ public class AsyncEventTest {
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(2),
                 null, 1, 100, 2);
+        subscriber.start();
 
         String someData = "some-data";
         publisher.publish(someData);
@@ -93,6 +97,7 @@ public class AsyncEventTest {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
                 new ExceptionThrowingHandler(1), null, 0, 0, 0);
+        subscriber.start();
 
         String someData = "some-data";
         publisher.publish(someData);

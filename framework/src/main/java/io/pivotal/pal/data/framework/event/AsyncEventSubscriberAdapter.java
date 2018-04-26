@@ -2,12 +2,13 @@ package io.pivotal.pal.data.framework.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.util.Assert;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel {
+public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel implements SmartLifecycle {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncEventSubscriberAdapter.class);
 
@@ -17,6 +18,8 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel {
     private int maxRetryCount;
     private long initialRetryWaitTime;
     private int retryWaitTimeMultiplier;
+
+    private boolean running = false;
 
     public AsyncEventSubscriberAdapter(String eventName, AsyncEventHandler<T> handler, AsyncEventHandler<T> errorHandler,
                                        int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier) {
@@ -31,7 +34,37 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel {
         this.retryWaitTimeMultiplier = retryWaitTimeMultiplier;
 
         super.addQueue(queue);
+    }
+
+    @Override
+    public boolean isAutoStartup() {
+        return true;
+    }
+
+    @Override
+    public void stop(Runnable callback) {
+        running = false;
+    }
+
+    @Override
+    public void start() {
+        running = true;
         new Processor().start();
+    }
+
+    @Override
+    public void stop() {
+        running = false;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public int getPhase() {
+        return 0;
     }
 
     private class Processor extends Thread {
@@ -41,8 +74,7 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel {
 
         @Override
         public void run() {
-            //noinspection InfiniteLoopStatement
-            while (true) {
+            while (running) {
                 T data = null;
 
                 try {
