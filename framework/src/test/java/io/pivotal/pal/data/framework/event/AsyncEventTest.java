@@ -24,6 +24,37 @@ public class AsyncEventTest {
         errorData = null;
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void error_missingEventName() {
+        new AsyncEventSubscriberAdapter<>(null, new Handler());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_missingHandler() {
+        new AsyncEventSubscriberAdapter<>(EVENT_NAME, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_invalidMaxRetryCount() {
+        new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null, -1, 100, 2, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_invalidInitialRetryWaitTime() {
+        new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null, 1, 10, 2, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_invalidRetryWaitTimeMultiplier() {
+        new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null, 1, 100, 0, null);
+    }
+
     @Test
     public void success() {
         DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);

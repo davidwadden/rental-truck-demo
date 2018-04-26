@@ -1,5 +1,7 @@
 package io.pivotal.pal.data.framework.event;
 
+import org.springframework.util.Assert;
+
 import java.util.Set;
 
 public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
@@ -23,6 +25,17 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
                                       int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier,
                                       Set<Class<?>> recoverableExceptions) {
         super(eventName);
+
+        Assert.hasText(eventName, "Event name must be specified");
+        Assert.notNull(handler, "Handler must be specified");
+
+        Assert.isTrue(maxRetryCount >= 0, "Invalid maxRetryCount, must be >=0: " + maxRetryCount);
+
+        if (maxRetryCount > 0) {
+            Assert.isTrue(initialRetryWaitTime >= 100, "Invalid initialRetryWaitTime, must be >=100: " + initialRetryWaitTime);
+            Assert.isTrue(retryWaitTimeMultiplier >= 1, "Invalid retryWaitTimeMultiplier, must be >=1: " + retryWaitTimeMultiplier);
+        }
+
         this.handler = handler;
         this.errorHandler = errorHandler;
         this.maxRetryCount = maxRetryCount;

@@ -11,6 +11,37 @@ public class SyncEventTest {
 
     private static final String EVENT_NAME = "test";
 
+    @Test(expected = IllegalArgumentException.class)
+    public void error_missingEventName() {
+        new SyncEventSubscriberAdapter<>(null, new Handler());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_missingHandler() {
+        new AsyncEventSubscriberAdapter<>(EVENT_NAME, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_invalidMaxRetryCount() {
+        new SyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null, -1, 100, 2, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_invalidInitialRetryWaitTime() {
+        new SyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null, 1, 10, 2, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void error_invalidRetryWaitTimeMultiplier() {
+        new SyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null, 1, 100, 0, null);
+    }
+
     @Test
     public void success_withoutRetry() {
         DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
