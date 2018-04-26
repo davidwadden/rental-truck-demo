@@ -12,20 +12,18 @@ public class AsyncEventTest {
     private static final String EVENT_NAME = "test";
 
     private String data;
-
-    private DefaultAsyncEventPublisher<String> publisher;
-    private AsyncEventSubscriberAdapter<String> subscriber;
+    private String errorData;
 
     @Before
     public void setUp() {
-        publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler());
-
         data = null;
     }
 
     @Test
-    public void basicTest() {
+    public void success() {
+        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler());
+
         String someData = "some-data";
         publisher.publish(someData);
 
@@ -34,11 +32,62 @@ public class AsyncEventTest {
                 .untilAsserted(() -> assertThat(data).isEqualTo(someData));
     }
 
+    @Test
+    public void error_withHandler() {
+        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler(),
+                new ErrorHandler());
+
+        String someData = "some-data";
+        publisher.publish(someData);
+
+        await()
+                .atMost(ONE_SECOND)
+                .untilAsserted(() -> {
+                    assertThat(errorData).isEqualTo(someData);
+                    assertThat(data).isNull();
+                });
+    }
+
+    @Test
+    public void error_withoutHandler() {
+        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+                new ExceptionThrowingHandler());
+
+        String someData = "some-data";
+        publisher.publish(someData);
+
+        await()
+                .atMost(ONE_SECOND)
+                .untilAsserted(() -> {
+                    assertThat(errorData).isNull();
+                    assertThat(data).isNull();
+                });
+    }
+
     private class Handler implements AsyncEventHandler<String> {
 
         @Override
         public void onEvent(String data) {
             AsyncEventTest.this.data = data;
+        }
+    }
+
+    private class ErrorHandler implements AsyncEventHandler<String> {
+
+        @Override
+        public void onEvent(String data) {
+            AsyncEventTest.this.errorData = data;
+        }
+    }
+
+    private class ExceptionThrowingHandler implements AsyncEventHandler<String> {
+
+        @Override
+        public void onEvent(String data) {
+            throw new IllegalArgumentException("data = " + data);
         }
     }
 }
