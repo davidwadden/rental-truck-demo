@@ -3,10 +3,11 @@ package io.pivotal.pal.data.framework.event;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Duration.ONE_SECOND;
 import static org.awaitility.Duration.TWO_SECONDS;
@@ -17,47 +18,75 @@ public class AsyncEventTest {
 
     private String data;
     private String errorData;
+    private DefaultAsyncEventPublisher<String> publisher;
 
     @Before
     public void setUp() {
         data = null;
         errorData = null;
+        publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_missingEventName() {
-        new AsyncEventSubscriberAdapter<>(null, new Handler());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new AsyncEventSubscriberAdapter<>(null, new Handler()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_missingHandler() {
-        new AsyncEventSubscriberAdapter<>(EVENT_NAME, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new AsyncEventSubscriberAdapter<>(EVENT_NAME, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_invalidMaxRetryCount() {
-        new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1),
-                null, -1, 100, 2, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() ->
+                        new AsyncEventSubscriberAdapter<>(
+                                EVENT_NAME,
+                                new ExceptionThrowingHandler(1),
+                                null,
+                                -1,
+                                100,
+                                2,
+                                null
+                        )
+                );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_invalidInitialRetryWaitTime() {
-        new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1),
-                null, 1, 10, 2, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() ->
+                        new AsyncEventSubscriberAdapter<>(
+                                EVENT_NAME,
+                                new ExceptionThrowingHandler(1),
+                                null,
+                                1,
+                                10,
+                                2,
+                                null
+                        )
+                );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_invalidRetryWaitTimeMultiplier() {
-        new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1),
-                null, 1, 100, 0, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new AsyncEventSubscriberAdapter<>(
+                                EVENT_NAME,
+                                new ExceptionThrowingHandler(1),
+                                null,
+                                1,
+                                100,
+                                0, null
+                        )
+                );
     }
 
     @Test
     public void success() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
         AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME, new Handler());
         subscriber.start();
 
@@ -71,10 +100,11 @@ public class AsyncEventTest {
 
     @Test
     public void error_withHandlerNoRetry() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(
+                EVENT_NAME,
                 new ExceptionThrowingHandler(1),
-                new ErrorHandler());
+                new ErrorHandler()
+        );
         subscriber.start();
 
         String someData = "some-data";
@@ -90,10 +120,15 @@ public class AsyncEventTest {
 
     @Test
     public void success_withoutHandlerWithRetry() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(
+                EVENT_NAME,
                 new ExceptionThrowingHandler(1),
-                null, 1, 100, 2, null);
+                null,
+                1,
+                100,
+                2,
+                null
+        );
         subscriber.start();
 
         String someData = "some-data";
@@ -109,10 +144,15 @@ public class AsyncEventTest {
 
     @Test
     public void success_withoutHandlerWithRetryWithRecoverableExceptions() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1), null, 1, 100,
-                2, new HashSet<>(Arrays.asList(IllegalArgumentException.class)));
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(
+                EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null,
+                1,
+                100,
+                2,
+                new HashSet<>(Collections.singletonList(IllegalArgumentException.class))
+        );
         subscriber.start();
 
         String someData = "some-data";
@@ -128,10 +168,15 @@ public class AsyncEventTest {
 
     @Test
     public void error_withoutHandlerWithRetryWithNonRecoverableExceptions() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1), null, 1, 100,
-                2, new HashSet<>(Arrays.asList(IllegalStateException.class)));
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(
+                EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null,
+                1,
+                100,
+                2,
+                new HashSet<>(Collections.singletonList(IllegalStateException.class))
+        );
         subscriber.start();
 
         String someData = "some-data";
@@ -147,10 +192,15 @@ public class AsyncEventTest {
 
     @Test
     public void success_withoutHandlerWithRetryExceeded() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(
+                EVENT_NAME,
                 new ExceptionThrowingHandler(2),
-                null, 1, 100, 2, null);
+                null,
+                1,
+                100,
+                2,
+                null
+        );
         subscriber.start();
 
         String someData = "some-data";
@@ -166,9 +216,15 @@ public class AsyncEventTest {
 
     @Test
     public void error_withoutHandlerNoRetry() {
-        DefaultAsyncEventPublisher<String> publisher = new DefaultAsyncEventPublisher<>(EVENT_NAME);
-        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1), null, 0, 0, 0, null);
+        AsyncEventSubscriberAdapter<String> subscriber = new AsyncEventSubscriberAdapter<>(
+                EVENT_NAME,
+                new ExceptionThrowingHandler(1),
+                null,
+                0,
+                0,
+                0,
+                null
+        );
         subscriber.start();
 
         String someData = "some-data";
@@ -198,6 +254,7 @@ public class AsyncEventTest {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     private class ExceptionThrowingHandler implements AsyncEventHandler<String> {
 
         int maxCount;
@@ -211,9 +268,9 @@ public class AsyncEventTest {
         public void onEvent(String data) {
             if (count++ < maxCount) {
                 throw new IllegalArgumentException("data = " + data);
-            } else {
-                AsyncEventTest.this.data = data;
             }
+
+            AsyncEventTest.this.data = data;
         }
     }
 }

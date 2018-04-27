@@ -21,8 +21,12 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
         this(eventName, handler, errorHandler, 0,0,0,null);
     }
 
-    public SyncEventSubscriberAdapter(String eventName, SyncEventHandler<C, R> handler, SyncEventHandler<C, R> errorHandler,
-                                      int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier,
+    public SyncEventSubscriberAdapter(String eventName,
+                                      SyncEventHandler<C, R> handler,
+                                      SyncEventHandler<C, R> errorHandler,
+                                      int maxRetryCount,
+                                      long initialRetryWaitTime,
+                                      int retryWaitTimeMultiplier,
                                       Set<Class<?>> recoverableExceptions) {
         super(eventName);
 
@@ -55,7 +59,9 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
                 try {
                     return handler.onEvent(data);
                 } catch (Exception t) {
-                    if (recoverableExceptions != null && !recoverableExceptions.isEmpty() && !recoverableExceptions.contains(t.getClass())) {
+                    if (recoverableExceptions != null &&
+                            !recoverableExceptions.isEmpty() &&
+                            !recoverableExceptions.contains(t.getClass())) {
                         throw t;
                     }
 

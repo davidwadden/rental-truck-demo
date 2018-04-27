@@ -1,51 +1,66 @@
 package io.pivotal.pal.data.framework.event;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class SyncEventTest {
 
     private static final String EVENT_NAME = "test";
 
-    @Test(expected = IllegalArgumentException.class)
+    private DefaultSyncEventPublisher<String, String> publisher;
+
+    @Before
+    public void setUp() {
+        publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
+    }
+
+    @Test
     public void error_missingEventName() {
-        new SyncEventSubscriberAdapter<>(null, new Handler());
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new SyncEventSubscriberAdapter<>(null, new Handler()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_missingHandler() {
-        new AsyncEventSubscriberAdapter<>(EVENT_NAME, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new AsyncEventSubscriberAdapter<>(EVENT_NAME, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_invalidMaxRetryCount() {
-        new SyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1),
-                null, -1, 100, 2, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new SyncEventSubscriberAdapter<>(EVENT_NAME,
+                        new ExceptionThrowingHandler(1),
+                        null, -1, 100, 2, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_invalidInitialRetryWaitTime() {
-        new SyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1),
-                null, 1, 10, 2, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new SyncEventSubscriberAdapter<>(EVENT_NAME,
+                        new ExceptionThrowingHandler(1),
+                        null, 1, 10, 2, null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void error_invalidRetryWaitTimeMultiplier() {
-        new SyncEventSubscriberAdapter<>(EVENT_NAME,
-                new ExceptionThrowingHandler(1),
-                null, 1, 100, 0, null);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new SyncEventSubscriberAdapter<>(EVENT_NAME,
+                        new ExceptionThrowingHandler(1),
+                        null, 1, 100, 0, null));
     }
 
     @Test
     public void success_withoutRetry() {
-        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         Handler handler = new Handler();
+        //noinspection unused
         SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler);
 
         handler.setData(null);
@@ -59,9 +74,10 @@ public class SyncEventTest {
 
     @Test
     public void success_withRetry() {
-        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, null);
+        //noinspection unused
+        SyncEventSubscriberAdapter<String, String> subscriber =
+                new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, null);
 
         handler.setData(null);
 
@@ -74,9 +90,10 @@ public class SyncEventTest {
 
     @Test
     public void success_withRetryWithRecoverableExceptions() {
-        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, new HashSet<>(Arrays.asList(IllegalArgumentException.class)));
+        //noinspection unused
+        SyncEventSubscriberAdapter<String, String> subscriber =
+                new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, new HashSet<>(Collections.singletonList(IllegalArgumentException.class)));
 
         handler.setData(null);
 
@@ -89,9 +106,10 @@ public class SyncEventTest {
 
     @Test
     public void error_withRetryWithNonRecoverableExceptions() {
-        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, new HashSet<>(Arrays.asList(IllegalStateException.class)));
+        //noinspection unused
+        SyncEventSubscriberAdapter<String, String> subscriber =
+                new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, null, 1, 100, 2, new HashSet<>(Collections.singletonList(IllegalStateException.class)));
 
         handler.setData(null);
 
@@ -104,10 +122,11 @@ public class SyncEventTest {
 
     @Test
     public void error_withHandlerNoRetry() {
-        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
         Handler errorHandler = new Handler();
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, errorHandler);
+        //noinspection unused
+        SyncEventSubscriberAdapter<String, String> subscriber =
+                new SyncEventSubscriberAdapter<>(EVENT_NAME, handler, errorHandler);
 
         String someData = "some-data";
         String result = publisher.publish(someData);
@@ -118,9 +137,10 @@ public class SyncEventTest {
 
     @Test
     public void error_withoutHandlerNoRetry() {
-        DefaultSyncEventPublisher<String, String> publisher = new DefaultSyncEventPublisher<>(EVENT_NAME);
         ExceptionThrowingHandler handler = new ExceptionThrowingHandler(1);
-        SyncEventSubscriberAdapter<String, String> subscriber = new SyncEventSubscriberAdapter<>(EVENT_NAME, handler);
+        //noinspection unused
+        SyncEventSubscriberAdapter<String, String> subscriber =
+                new SyncEventSubscriberAdapter<>(EVENT_NAME, handler);
 
         String someData = "some-data";
         String result = publisher.publish(someData);
@@ -128,6 +148,7 @@ public class SyncEventTest {
         assertThat(result).isNull();
     }
 
+    @SuppressWarnings("WeakerAccess")
     private class ExceptionThrowingHandler implements SyncEventHandler<String, String> {
 
         int maxCount;
@@ -157,6 +178,7 @@ public class SyncEventTest {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     private class Handler implements SyncEventHandler<String, String> {
 
         private String data;

@@ -31,8 +31,12 @@ public class AsyncEventSubscriberAdapter<T> extends AsyncEventChannel implements
         this(eventName, handler, errorHandler, 0, 0, 0, null);
     }
 
-    public AsyncEventSubscriberAdapter(String eventName, AsyncEventHandler<T> handler, AsyncEventHandler<T> errorHandler,
-                                       int maxRetryCount, long initialRetryWaitTime, int retryWaitTimeMultiplier,
+    public AsyncEventSubscriberAdapter(String eventName,
+                                       AsyncEventHandler<T> handler,
+                                       AsyncEventHandler<T> errorHandler,
+                                       int maxRetryCount,
+                                       long initialRetryWaitTime,
+                                       int retryWaitTimeMultiplier,
                                        Set<Class<?>> recoverableExceptions) {
         super(eventName);
 
