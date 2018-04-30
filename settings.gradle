@@ -1,4 +1,4 @@
 include 'framework',
-        'reservation'
+        'cqrs-cassandra-app'
 
 enableFeaturePreview('IMPROVED_POM_SUPPORT')
