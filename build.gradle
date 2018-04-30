@@ -20,10 +20,18 @@ subprojects {
 
     ext {
         awaitilityVersion = '3.1.0'
+        springStatemachineVersion = '2.0.1.RELEASE'
     }
     ext['assertj.version'] = '3.9.1'
 
     repositories {
         mavenCentral()
+    }
+
+    dependencies {
+        constraints {
+            compile "org.awaitility:awaitility:${awaitilityVersion}"
+            compile "org.springframework.statemachine:spring-statemachine-core:${springStatemachineVersion}"
+        }
     }
 }
