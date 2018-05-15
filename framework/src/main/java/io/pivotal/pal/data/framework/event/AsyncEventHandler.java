@@ -10,7 +10,7 @@ public interface AsyncEventHandler<T> {
     /**
      * The event framework will call this method upon processing of an Event.
      *
-     * @param data the event
+     * @param event the event
      */
-    void onEvent(T data);
+    void onEvent(T event);
 }

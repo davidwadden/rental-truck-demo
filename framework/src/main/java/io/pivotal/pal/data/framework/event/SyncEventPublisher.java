@@ -11,8 +11,8 @@ public interface SyncEventPublisher<C, R> {
     /**
      * Publishes an event based using the underlying implementation.
      *
-     * @param data the event to send
+     * @param event the event to send
      * @return return value from processing the event
      */
-    R publish(C data);
+    R publish(C event);
 }

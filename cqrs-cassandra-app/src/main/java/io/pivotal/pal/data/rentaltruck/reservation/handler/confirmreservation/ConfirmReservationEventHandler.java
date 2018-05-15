@@ -29,11 +29,11 @@ public class ConfirmReservationEventHandler implements AsyncEventHandler<Reserva
     }
 
     @Override
-    public void onEvent(ReservationValidatedEvent data) {
-        logger.info("reservationValidated: {}:", data);
+    public void onEvent(ReservationValidatedEvent event) {
+        logger.info("reservationValidated: {}:", event);
 
         // fetch existing reservation
-        ReservationByConfirmationNumber reservation = repository.findByConfirmationNumber(data.getConfirmationNumber());
+        ReservationByConfirmationNumber reservation = repository.findByConfirmationNumber(event.getConfirmationNumber());
 
         // check that reservation is in expected state (to de-dup event)
         if (!reservation.getStatus().equalsIgnoreCase("VALIDATED")) {

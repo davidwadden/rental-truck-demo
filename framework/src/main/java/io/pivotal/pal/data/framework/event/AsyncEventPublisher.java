@@ -17,7 +17,7 @@ public interface AsyncEventPublisher<T> {
     /**
      * Publishes an event based using the underlying implementation.
      *
-     * @param data the event to send
+     * @param event the event to send
      */
-    void publish(T data);
+    void publish(T event);
 }

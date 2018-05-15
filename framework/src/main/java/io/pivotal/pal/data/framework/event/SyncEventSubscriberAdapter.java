@@ -51,13 +51,13 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
         registerSubscriber((SyncEventSubscriberAdapter<Object, Object>) this);
     }
 
-    public R onEvent(C data) {
+    public R onEvent(C event) {
         try {
             long waitTime = initialRetryWaitTime;
 
             for (int retryCount = 0; retryCount <= maxRetryCount; ++retryCount) {
                 try {
-                    return handler.onEvent(data);
+                    return handler.onEvent(event);
                 } catch (Exception t) {
                     if (recoverableExceptions != null &&
                             !recoverableExceptions.isEmpty() &&
@@ -81,7 +81,7 @@ public class SyncEventSubscriberAdapter<C, R> extends SyncEventChannel {
             if (errorHandler == null) {
                 return null;
             } else {
-                return errorHandler.onEvent(data);
+                return errorHandler.onEvent(event);
             }
         }
     }

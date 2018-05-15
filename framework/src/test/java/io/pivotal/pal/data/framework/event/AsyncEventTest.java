@@ -241,16 +241,16 @@ public class AsyncEventTest {
     private class Handler implements AsyncEventHandler<String> {
 
         @Override
-        public void onEvent(String data) {
-            AsyncEventTest.this.data = data;
+        public void onEvent(String event) {
+            AsyncEventTest.this.data = event;
         }
     }
 
     private class ErrorHandler implements AsyncEventHandler<String> {
 
         @Override
-        public void onEvent(String data) {
-            AsyncEventTest.this.errorData = data;
+        public void onEvent(String event) {
+            AsyncEventTest.this.errorData = event;
         }
     }
 
@@ -265,12 +265,12 @@ public class AsyncEventTest {
         }
 
         @Override
-        public void onEvent(String data) {
+        public void onEvent(String event) {
             if (count++ < maxCount) {
-                throw new IllegalArgumentException("data = " + data);
+                throw new IllegalArgumentException("data = " + event);
             }
 
-            AsyncEventTest.this.data = data;
+            AsyncEventTest.this.data = event;
         }
     }
 }

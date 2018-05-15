@@ -8,13 +8,13 @@ public class DefaultSyncEventPublisher<C, R> extends SyncEventChannel implements
         super(eventName);
     }
 
-    public R publish(C data) {
+    public R publish(C event) {
         Set<SyncEventSubscriberAdapter<Object, Object>> set = getSubscribers();
         R retValue = null;
 
         for (SyncEventSubscriberAdapter<Object, Object> subscriber : set) {
             //noinspection unchecked
-            retValue = (R) subscriber.onEvent(data);
+            retValue = (R) subscriber.onEvent(event);
         }
 
         return retValue;

@@ -9,12 +9,12 @@ public class DefaultAsyncEventPublisher<T> extends AsyncEventChannel implements 
         super(eventName);
     }
 
-    public void publish(T data) {
+    public void publish(T event) {
         Set<BlockingQueue<?>> queues = super.getQueues();
 
         for (BlockingQueue<?> queue : queues) {
             //noinspection unchecked
-            ((BlockingQueue<T>) queue).offer(data);
+            ((BlockingQueue<T>) queue).offer(event);
         }
     }
 }

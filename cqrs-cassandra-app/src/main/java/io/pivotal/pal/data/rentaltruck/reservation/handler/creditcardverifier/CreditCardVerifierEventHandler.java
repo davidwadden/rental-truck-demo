@@ -41,10 +41,10 @@ public class CreditCardVerifierEventHandler implements AsyncEventHandler<Reserva
     }
 
     @Override
-    public void onEvent(ReservationInitializedEvent data) {
-        logger.info("reservationRequested event: {}:", data);
+    public void onEvent(ReservationInitializedEvent event) {
+        logger.info("reservationRequested event: {}:", event);
 
-        String confirmationNumber = data.getConfirmationNumber();
+        String confirmationNumber = event.getConfirmationNumber();
 
         // de-dup by updating record to status=processing (abort if already processing status)
         ReservationByConfirmationNumber reservation = repository.findByConfirmationNumber(confirmationNumber);

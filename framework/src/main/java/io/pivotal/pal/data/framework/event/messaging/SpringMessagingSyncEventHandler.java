@@ -16,8 +16,8 @@ public class SpringMessagingSyncEventHandler<C, R> implements SyncEventHandler<C
     }
 
     @Override
-    public R onEvent(C data) {
-        Message<C> message = MessageBuilder.withPayload(data)
+    public R onEvent(C event) {
+        Message<C> message = MessageBuilder.withPayload(event)
                 .setHeader("eventName", eventName)
                 .build();
         channel.send(message);

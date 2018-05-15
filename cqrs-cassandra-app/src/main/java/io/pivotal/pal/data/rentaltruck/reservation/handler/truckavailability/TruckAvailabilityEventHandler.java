@@ -41,8 +41,8 @@ public class TruckAvailabilityEventHandler implements AsyncEventHandler<CreditCa
     }
 
     @Override
-    public void onEvent(CreditCardVerifiedEvent data) {
-        String confirmationNumber = data.getConfirmationNumber();
+    public void onEvent(CreditCardVerifiedEvent event) {
+        String confirmationNumber = event.getConfirmationNumber();
 
         ReservationByConfirmationNumber reservation = reservationRepository.findByConfirmationNumber(confirmationNumber);
         Assert.notNull(reservation, "Reservation '" + confirmationNumber + "' not found");

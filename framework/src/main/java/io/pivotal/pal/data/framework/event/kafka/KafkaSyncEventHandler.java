@@ -14,8 +14,8 @@ public class KafkaSyncEventHandler<C, R> implements SyncEventHandler<C, R> {
     }
 
     @Override
-    public R onEvent(C data) {
-        template.send(eventName, data);
+    public R onEvent(C event) {
+        template.send(eventName, event);
         return null;
     }
 }

@@ -11,8 +11,8 @@ public interface SyncEventHandler<C, R> {
     /**
      * The event framework will call this method upon processing of an Event.
      *
-     * @param data the event being emitted
+     * @param event the event being emitted
      * @return the return value of processing the event
      */
-    R onEvent(C data);
+    R onEvent(C event);
 }

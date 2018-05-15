@@ -16,8 +16,8 @@ public class SpringMessagingAsyncEventHandler<T> implements AsyncEventHandler<T>
     }
 
     @Override
-    public void onEvent(T data) {
-        Message<T> message = MessageBuilder.withPayload(data)
+    public void onEvent(T event) {
+        Message<T> message = MessageBuilder.withPayload(event)
                 .setHeader("eventName", eventName)
                 .build();
         channel.send(message);

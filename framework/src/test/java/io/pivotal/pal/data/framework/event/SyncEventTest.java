@@ -168,12 +168,12 @@ public class SyncEventTest {
         }
 
         @Override
-        public String onEvent(String data) {
+        public String onEvent(String event) {
             if (count++ < maxCount) {
-                throw new IllegalArgumentException("data = " + data);
+                throw new IllegalArgumentException("data = " + event);
             } else {
-                this.data = data;
-                return data;
+                this.data = event;
+                return event;
             }
         }
     }
@@ -195,9 +195,9 @@ public class SyncEventTest {
         }
 
         @Override
-        public String onEvent(String data) {
-            this.data = data;
-            return data;
+        public String onEvent(String event) {
+            this.data = event;
+            return event;
         }
     }
 }

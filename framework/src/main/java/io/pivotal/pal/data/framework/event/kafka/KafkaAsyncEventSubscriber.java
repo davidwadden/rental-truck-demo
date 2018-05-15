@@ -14,7 +14,7 @@ public class KafkaAsyncEventSubscriber<T> implements AsyncEventHandler<T> {
     }
 
     @Override
-    public void onEvent(T data) {
-        template.send(eventName, data);
+    public void onEvent(T event) {
+        template.send(eventName, event);
     }
 }
