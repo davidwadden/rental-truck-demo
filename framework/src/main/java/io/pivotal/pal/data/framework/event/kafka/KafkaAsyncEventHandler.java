@@ -3,12 +3,12 @@ package io.pivotal.pal.data.framework.event.kafka;
 import io.pivotal.pal.data.framework.event.AsyncEventHandler;
 import org.springframework.kafka.core.KafkaTemplate;
 
-public class KafkaAsyncEventSubscriber<T> implements AsyncEventHandler<T> {
+public class KafkaAsyncEventHandler<T> implements AsyncEventHandler<T> {
 
     private String eventName;
     private KafkaTemplate<Object, T> template;
 
-    public KafkaAsyncEventSubscriber(String eventName, KafkaTemplate<Object, T> template) {
+    public KafkaAsyncEventHandler(String eventName, KafkaTemplate<Object, T> template) {
         this.eventName = eventName;
         this.template = template;
     }
